@@ -11,9 +11,11 @@
       theme: {
         extend: {
           colors: {
-            yapeInk: '#2e0b3c',
-            yapePurple: '#5C1C6A',
-            yapeAqua: '#00D4AF',
+            yapeInk: '#311443',       /* Morado ultra oscuro original para montos y nombres */
+            yapePurple: '#5C1C6A',    /* Fondo morado de la app */
+            yapeMagenta: '#932399',   /* Fucsia brillante de ¡Yapeaste! */
+            yapeGray: '#8c7d95',      /* Gris morado de las etiquetas y textos secundarios */
+            yapeAqua: '#00D4AF',      /* Turquesa de los botones e iconos */
             yapeTeal: '#00d4af'
           }
         }
@@ -46,13 +48,13 @@
       <!-- Input Celular -->
       <div>
         <label class="block text-sm font-semibold text-gray-600 mb-1">Número de Celular</label>
-        <input id="inputCelular" type="tel" placeholder="Ej. 008" class="w-full px-4 py-2.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-yapePurple text-yapeInk">
+        <input id="inputCelular" type="text" placeholder="Ej. *** *** 074" class="w-full px-4 py-2.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-yapePurple text-yapeInk">
       </div>
 
       <!-- Input Monto -->
       <div>
         <label class="block text-sm font-semibold text-gray-600 mb-1">Monto (S/)</label>
-        <input id="inputMonto" type="number" step="0.1" placeholder="Ej. 30" class="w-full px-4 py-2.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-yapePurple text-yapeInk">
+        <input id="inputMonto" type="number" step="0.1" placeholder="Ej. 20" class="w-full px-4 py-2.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-yapePurple text-yapeInk">
       </div>
 
       <!-- Botón para procesar -->
@@ -62,12 +64,11 @@
     </div>
   </div>
 
-  <!-- 2. VISTA DEL RECIBO COMPLETO (Ajustado para abarcar de punta a punta) -->
+  <!-- 2. VISTA DEL RECIBO COMPLETO -->
   <div id="seccionRecibo" class="hidden w-full max-w-md flex flex-col items-center space-y-4 px-4 pt-4 pb-6">
     
-    <!-- Contenedor del Personaje Superior (Ocupa de punta a punta con un pequeño espacio) -->
+    <!-- Contenedor del Personaje Superior (Ajustado) -->
     <div class="relative w-full flex justify-center items-center">
-      <!-- El billete ahora usa w-[94%] para expandirse perfectamente en el celular -->
       <img id="personajeFondo" src="20_soles-removebg-preview.png" alt="Personaje Histórico" class="w-[94%] h-auto object-contain">
       <!-- Botón X en la esquina del billete -->
       <button id="btnCerrarX" class="absolute top-2 right-[5%] text-white/80 hover:text-white bg-black/20 rounded-full p-1 z-10">
@@ -75,29 +76,29 @@
       </button>
     </div>
 
-    <!-- Tarjeta Principal Blanca (Alineada al ancho del billete) -->
+    <!-- Tarjeta Principal Blanca -->
     <div class="bg-white rounded-[28px] p-6 shadow-xl text-yapeInk w-[94%] relative overflow-hidden -mt-4">
       
-      <!-- Encabezado ¡Yapeaste! y Compartir -->
+      <!-- Encabezado ¡Yapeaste! (Fucsia Original) y Compartir -->
       <div class="flex justify-between items-center mb-4">
-        <h2 class="text-xl font-bold text-yapeInk">¡Yapeaste!</h2>
-        <button class="text-yapeTeal font-bold text-xs flex items-center space-x-1">
+        <h2 class="text-[22px] font-bold text-yapeMagenta tracking-tight">¡Yapeaste!</h2>
+        <button class="text-yapeAqua font-bold text-xs flex items-center space-x-1">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 10.742l4.828-2.414m0 0a3 3 0 10-2.243-4.077L6.44 6.666m6.142 1.662a3 3 0 00c0 1.253-.223 2.454-.64 3.563m0 0a3 3 0 102.243 4.077L14.63 12m0 0a3 3 0 00-1.253-1.243"></path></svg>
           <span>Compartir</span>
         </button>
       </div>
 
-      <!-- Sección del Monto (Corregido con formato de dos decimales) -->
-      <div class="flex items-baseline mb-1">
-        <span class="text-yapeInk text-3xl font-extrabold mr-1">S/</span>
-        <span id="montoFinal" class="text-yapeInk text-5xl font-black tracking-tight">0.00</span>
+      <!-- Sección del Monto (Morado Real y grosor estilizado) -->
+      <div class="flex items-baseline mb-2">
+        <span class="text-yapeInk text-3xl font-bold mr-1.5 select-none">S/</span>
+        <span id="montoFinal" class="text-yapeInk text-[52px] font-bold tracking-tight leading-none">0</span>
       </div>
 
-      <!-- Nombre del Destinatario -->
-      <p id="nombreDestinatario" class="text-xl font-bold text-yapeInk mb-3">Daniel Dav*</p>
+      <!-- Nombre del Destinatario (Morado Real) -->
+      <p id="nombreDestinatario" class="text-lg font-bold text-yapeInk mb-4">Daniel Dav*</p>
 
       <!-- Fecha y Hora con iconos -->
-      <div class="flex items-center space-x-4 text-xs text-gray-500 font-semibold mb-6">
+      <div class="flex items-center space-x-4 text-xs text-yapeGray font-semibold mb-5 border-b border-gray-100 pb-5">
         <span class="flex items-center">
           <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
           <span id="fechaTexto">13 jul. 2026</span>
@@ -109,8 +110,8 @@
       </div>
 
       <!-- Código de Seguridad -->
-      <div class="flex items-center justify-between border-t border-b border-gray-100 py-4 mb-6">
-        <span class="text-[10px] font-bold text-gray-400 tracking-wider uppercase flex items-center">
+      <div class="flex items-center justify-between border-b border-gray-100 pb-5 mb-5">
+        <span class="text-[10px] font-bold text-yapeGray tracking-wider uppercase flex items-center">
           Código de seguridad 
           <span class="ml-1.5 bg-yapeAqua text-white rounded-full w-3.5 h-3.5 flex items-center justify-center text-[8px] font-black">i</span>
         </span>
@@ -123,26 +124,26 @@
 
       <!-- Datos de la transacción -->
       <div class="space-y-3">
-        <p class="text-[10px] font-bold text-gray-400 tracking-wider uppercase">Datos de la transacción</p>
+        <p class="text-[10px] font-bold text-yapeGray tracking-wider uppercase">Datos de la transacción</p>
         
         <div class="flex justify-between text-xs font-semibold">
-          <span class="text-gray-400">Nro. de celular</span>
+          <span class="text-yapeGray">Nro. de celular</span>
           <span id="celularDestinatario" class="text-yapeInk font-bold">008</span>
         </div>
         <div class="flex justify-between text-xs font-semibold">
-          <span class="text-gray-400">Destino</span>
+          <span class="text-yapeGray">Destino</span>
           <span class="text-yapeInk font-bold">Yape</span>
         </div>
         <div class="flex justify-between text-xs font-semibold">
-          <span class="text-gray-400">Nro. de operación</span>
+          <span class="text-yapeGray">Nro. de operación</span>
           <span id="numOperacion" class="text-yapeInk font-bold">43600540</span>
         </div>
       </div>
 
     </div>
 
-    <!-- Botones de Acción adaptados al mismo ancho -->
-    <button id="btnNuevoYapeo" class="w-[94%] bg-[#00D4AF] hover:bg-[#00bda0] text-yapeInk font-extrabold py-3.5 px-4 rounded-2xl flex items-center justify-center space-x-2 text-sm shadow-md transition duration-200">
+    <!-- Botones de Acción -->
+    <button id="btnNuevoYapeo" class="w-[94%] bg-[#00D4AF] hover:bg-[#00bda0] text-[#311443] font-bold py-3.5 px-4 rounded-2xl flex items-center justify-center space-x-2 text-sm shadow-md transition duration-200">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
       <span>Nuevo Yapeo</span>
     </button>
@@ -152,14 +153,13 @@
       <span>Necesito ayuda</span>
     </button>
 
-    <!-- SECCIÓN PUBLICITARIA FLOTANTE (URL DE IMAGEN CORREGIDA AL 100%) -->
+    <!-- SECCIÓN PUBLICITARIA FLOTANTE -->
     <div class="rounded-3xl overflow-hidden p-5 bg-[#4A1153] shadow-md mt-4 w-[94%]">
       <div class="text-xs font-bold text-white mb-3 flex justify-between items-center">
         <span>Más en Yape</span>
         <span class="text-black bg-yellow-400 px-1.5 py-0.5 text-[9px] rounded uppercase font-black">Nuevo</span>
       </div>
       <div class="rounded-2xl overflow-hidden">
-        <!-- Imagen que cargará perfectamente la publicidad -->
         <img src="https://i.postimg.cc/W3DvJwTz/6.webp" alt="Publicidad Yape" class="w-full h-auto object-cover">
       </div>
     </div>
@@ -189,15 +189,18 @@
           const txtNumOperacion = document.getElementById("numOperacion");
           const imgPersonaje = document.getElementById("personajeFondo");
 
-          // Códigos de seguridad
           const txtCod1 = document.getElementById("cod1");
           const txtCod2 = document.getElementById("cod2");
           const txtCod3 = document.getElementById("cod3");
 
-          // 1. Mostrar Monto formateado con exactamente dos decimales (.00)
-          txtMontoFinal.textContent = inputMonto.toFixed(2);
+          // 1. Mostrar Monto dinámicamente (si es entero, no lleva .00 tal como el original "S/ 20")
+          if (inputMonto % 1 === 0) {
+            txtMontoFinal.textContent = inputMonto.toString();
+          } else {
+            txtMontoFinal.textContent = inputMonto.toFixed(2);
+          }
 
-          // 2. Lógica Dinámica de Personajes según el Monto ingresado
+          // 2. Lógica Dinámica de Personajes según el Monto
           if (inputMonto >= 0.1 && inputMonto <= 19.99) {
             imgPersonaje.src = "10_soles-removebg-preview.png"; // José Quiñones
           } else if (inputMonto >= 20.00 && inputMonto <= 49.99) {
@@ -248,7 +251,6 @@
         });
       }
 
-      // Volver a iniciar el proceso
       const regresarAlFormulario = () => {
         document.getElementById("inputMonto").value = "";
         document.getElementById("inputNombre").value = "";
