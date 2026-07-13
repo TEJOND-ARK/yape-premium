@@ -1,0 +1,17 @@
+{
+  "short_name": "Yape Editor",
+  "name": "Yape - Generador de Recibos",
+  "icons": [
+    {
+      "src": "https://i.postimg.cc/W3DvJwTz/6.webp",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "./index.html",
+  "background_color": "#5C1C6A",
+  "theme_color": "#7B2E83",
+  "display": "standalone",
+  "orientation": "portrait"
+}
