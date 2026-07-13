@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Yape</title>
+  <title>Yapear - Confirmación</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -13,8 +13,8 @@
           colors: {
             yapeInk: '#2e0b3c',
             yapePurple: '#5C1C6A',
-            yapeAqua: '#25D366',
-            yapeGray: '#f4f4f4'
+            yapeAqua: '#00D4AF',
+            yapeTeal: '#00d4af'
           }
         }
       }
@@ -30,131 +30,148 @@
     }
   </style>
 </head>
-<body class="flex flex-col justify-center items-center min-h-screen font-sans">
+<body class="flex flex-col items-center min-h-screen font-sans p-4">
 
   <!-- 1. FORMULARIO DE INGRESO (Se oculta al yapear) -->
-  <div id="seccionFormulario" class="bg-white rounded-3xl shadow-xl w-full max-w-md p-6 border border-gray-100 mx-4">
-    <h2 class="text-xl font-bold text-yapeInk mb-4 text-center">Generar Yape Premium</h2>
+  <div id="seccionFormulario" class="bg-white rounded-3xl shadow-xl w-full max-w-sm p-6 border border-gray-100 my-auto">
+    <h2 class="text-xl font-bold text-yapeInk mb-4 text-center">Generar Yape</h2>
     
     <div class="space-y-4">
       <!-- Input Nombre -->
       <div>
         <label class="block text-sm font-semibold text-gray-600 mb-1">Nombre del Destinatario</label>
-        <input id="inputNombre" type="text" placeholder="Ej. Juan Pérez" class="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-yapePurple">
+        <input id="inputNombre" type="text" placeholder="Ej. Daniel Dav*" class="w-full px-4 py-2.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-yapePurple text-yapeInk">
       </div>
 
       <!-- Input Celular -->
       <div>
         <label class="block text-sm font-semibold text-gray-600 mb-1">Número de Celular</label>
-        <input id="inputCelular" type="tel" placeholder="Ej. 955 100 282" class="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-yapePurple">
+        <input id="inputCelular" type="tel" placeholder="Ej. 008" class="w-full px-4 py-2.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-yapePurple text-yapeInk">
       </div>
 
       <!-- Input Monto -->
       <div>
         <label class="block text-sm font-semibold text-gray-600 mb-1">Monto (S/)</label>
-        <input id="inputMonto" type="number" step="0.10" placeholder="Ej. 30.00" class="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-yapePurple">
+        <input id="inputMonto" type="number" step="0.1" placeholder="Ej. 30" class="w-full px-4 py-2.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-yapePurple text-yapeInk">
       </div>
 
       <!-- Botón para procesar -->
-      <button id="btnYapear" class="w-full bg-yapePurple hover:bg-yapeInk text-white font-bold py-3.5 px-4 rounded-xl transition duration-200 shadow-md text-lg">
+      <button id="btnYapear" class="w-full bg-yapePurple hover:bg-yapeInk text-white font-bold py-3 px-4 rounded-xl transition duration-200 shadow-md">
         Yapear
       </button>
     </div>
   </div>
 
-  <!-- 2. VISTA DEL RECIBO COMPLETO (Formato Móvil Real) -->
-  <div id="seccionRecibo" class="hidden w-full max-w-md min-h-screen bg-yapePurple flex flex-col justify-between text-white relative">
+  <!-- 2. VISTA DEL RECIBO COMPLETO (Estructura oficial de tu captura) -->
+  <div id="seccionRecibo" class="hidden w-full max-w-sm flex flex-col space-y-4">
     
-    <!-- Barra superior con la X de cerrar -->
-    <div class="flex justify-between items-center px-6 pt-6 pb-2">
-      <button id="btnCerrar" class="text-white hover:opacity-80">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path>
-        </svg>
+    <!-- Imagen de Personaje Superior (Con botón X) -->
+    <div class="relative w-full flex justify-center">
+      <img id="personajeFondo" src="20_soles-removebg-preview.png" alt="Personaje Histórico" class="w-full h-auto max-w-[280px] object-contain">
+      <!-- Botón X de cerrar para volver atrás -->
+      <button id="btnCerrarX" class="absolute top-2 right-6 text-white/80 hover:text-white bg-black/20 rounded-full p-1">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
       </button>
-      <span class="text-sm font-medium tracking-wide">Compartir constancia</span>
     </div>
 
-    <!-- Cuerpo del Recibo -->
-    <div class="bg-white rounded-t-[32px] flex-1 flex flex-col justify-between p-6 text-center text-yapeInk shadow-2xl mt-2">
+    <!-- Tarjeta Principal Blanca -->
+    <div class="bg-white rounded-[28px] p-6 shadow-xl text-yapeInk relative overflow-hidden -mt-6">
       
-      <div>
-        <!-- Check de Éxito -->
-        <div class="flex justify-center mt-2 mb-3">
-          <div class="bg-[#00D4AF] p-3 rounded-full">
-            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5" d="M5 13l4 4L19 7"></path>
-            </svg>
-          </div>
+      <!-- Encabezado ¡Yapeaste! y Compartir -->
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold text-yapeInk">¡Yapeaste!</h2>
+        <button class="text-yapeTeal font-bold text-xs flex items-center space-x-1">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 10.742l4.828-2.414m0 0a3 3 0 10-2.243-4.077L6.44 6.666m6.142 1.662a3 3 0 00c0 1.253-.223 2.454-.64 3.563m0 0a3 3 0 102.243 4.077L14.63 12m0 0a3 3 0 00-1.253-1.243"></path></svg>
+          <span>Compartir</span>
+        </button>
+      </div>
+
+      <!-- Sección del Monto (S/ 30.00) -->
+      <div class="flex items-baseline mb-1">
+        <span class="text-yapeInk text-3xl font-extrabold mr-1">S/</span>
+        <span id="montoFinal" class="text-yapeInk text-5xl font-black tracking-tight">0.00</span>
+      </div>
+
+      <!-- Nombre del Destinatario -->
+      <p id="nombreDestinatario" class="text-xl font-bold text-yapeInk mb-3">Daniel Dav*</p>
+
+      <!-- Fecha y Hora con iconos -->
+      <div class="flex items-center space-x-4 text-xs text-gray-500 font-semibold mb-6">
+        <span class="flex items-center">
+          <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+          <span id="fechaTexto">13 jul. 2026</span>
+        </span>
+        <span class="flex items-center">
+          <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          <span id="horaTexto">05:40 p. m.</span>
+        </span>
+      </div>
+
+      <!-- Código de Seguridad -->
+      <div class="flex items-center justify-between border-t border-b border-gray-100 py-4 mb-6">
+        <span class="text-[10px] font-bold text-gray-400 tracking-wider uppercase flex items-center">
+          Código de seguridad 
+          <span class="ml-1.5 bg-yapeAqua text-white rounded-full w-3.5 h-3.5 flex items-center justify-center text-[8px] font-black">i</span>
+        </span>
+        <div class="flex space-x-1">
+          <span id="cod1" class="bg-gray-100 text-yapeInk font-bold text-xs px-2.5 py-1 rounded-md">8</span>
+          <span id="cod2" class="bg-gray-100 text-yapeInk font-bold text-xs px-2.5 py-1 rounded-md">7</span>
+          <span id="cod3" class="bg-gray-100 text-yapeInk font-bold text-xs px-2.5 py-1 rounded-md">7</span>
         </div>
+      </div>
 
-        <!-- Título -->
-        <h2 class="text-xl font-bold text-yapeInk mb-1">¡Yapeaste!</h2>
-
-        <!-- SECCIÓN DE MONTO CON EL PERSONAJE HISTÓRICO DE FONDO -->
-        <div class="relative flex justify-center items-center my-4 h-36">
-          <!-- Personaje de Fondo Dinámico -->
-          <img id="personajeFondo" src="10_soles-removebg-preview.png" alt="Personaje" class="absolute max-h-36 w-auto object-contain opacity-40 pointer-events-none select-none z-0">
-          
-          <!-- El Monto -->
-          <div class="relative z-10 flex items-baseline">
-            <span class="text-yapeInk text-3xl font-extrabold mr-1">S/</span>
-            <span id="montoFinal" class="text-yapeInk text-6xl font-black tracking-tight">0.00</span>
-          </div>
-        </div>
-
-        <!-- Nombre del Destinatario -->
-        <p id="nombreDestinatario" class="text-xl font-extrabold text-yapeInk mb-1">Destinatario</p>
+      <!-- Datos de la transacción -->
+      <div class="space-y-3">
+        <p class="text-[10px] font-bold text-gray-400 tracking-wider uppercase">Datos de la transacción</p>
         
-        <!-- Celular del Destinatario -->
-        <p id="celularDestinatario" class="text-sm text-gray-500 font-semibold mb-4">• 955 100 282</p>
-
-        <!-- Detalles de la Transacción -->
-        <div class="bg-gray-50 rounded-2xl p-4 text-left space-y-2 border border-gray-100 max-w-sm mx-auto">
-          <div class="flex justify-between text-xs">
-            <span class="text-gray-400 font-semibold">Fecha y hora</span>
-            <span id="fechaHora" class="text-gray-600 font-bold">13 Jul. 2026 - 17:27</span>
-          </div>
-          <div class="flex justify-between text-xs">
-            <span class="text-gray-400 font-semibold">Destino</span>
-            <span class="text-gray-600 font-bold">Yape</span>
-          </div>
-          <div class="flex justify-between text-xs">
-            <span class="text-gray-400 font-semibold">N° de operación</span>
-            <span id="numOperacion" class="text-gray-600 font-bold">98374283</span>
-          </div>
+        <div class="flex justify-between text-xs font-semibold">
+          <span class="text-gray-400">Nro. de celular</span>
+          <span id="celularDestinatario" class="text-yapeInk font-bold">008</span>
+        </div>
+        <div class="flex justify-between text-xs font-semibold">
+          <span class="text-gray-400">Destino</span>
+          <span class="text-yapeInk font-bold">Yape</span>
+        </div>
+        <div class="flex justify-between text-xs font-semibold">
+          <span class="text-gray-400">Nro. de operación</span>
+          <span id="numOperacion" class="text-yapeInk font-bold">92909877</span>
         </div>
       </div>
-
-      <!-- SECCIÓN PUBLICITARIA (URL COMPLETA .WEBP CORREGIDA) -->
-      <div class="mt-6 mb-4">
-        <div class="rounded-3xl overflow-hidden p-5 bg-[#4A1153] shadow-md">
-          <div class="text-sm font-semibold text-white mb-3.5 flex justify-between items-center">
-            <span>Más en Yape</span>
-            <span class="text-black bg-yellow-400 px-1.5 py-0.5 text-[10px] rounded uppercase font-black">Nuevo</span>
-          </div>
-          <div class="rounded-2xl overflow-hidden">
-            <!-- Cargando tu imagen favorita de manera segura -->
-            <img src="https://i.postimg.cc/W3DvJwTz/6.webp" alt="Publicidad Yape" class="w-full h-auto object-cover">
-          </div>
-        </div>
-      </div>
-
-      <!-- Botón de Cierre "Ir a inicio" -->
-      <button id="btnIrInicio" class="w-full bg-[#f4f4f4] hover:bg-gray-200 text-yapePurple font-extrabold py-3.5 px-4 rounded-xl transition duration-200 text-sm tracking-wide">
-        Ir a inicio
-      </button>
 
     </div>
+
+    <!-- Botones de Acción -->
+    <button id="btnNuevoYapeo" class="w-full bg-[#00D4AF] hover:bg-[#00bda0] text-yapeInk font-extrabold py-3.5 px-4 rounded-2xl flex items-center justify-center space-x-2 text-sm shadow-md transition duration-200">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+      <span>Nuevo Yapeo</span>
+    </button>
+
+    <button id="btnAyuda" class="w-full bg-white/10 hover:bg-white/20 text-white font-semibold py-3 px-4 rounded-2xl flex items-center justify-center space-x-2 text-xs">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+      <span>Necesito ayuda</span>
+    </button>
+
+    <!-- SECCIÓN PUBLICITARIA FLOTANTE (CORREGIDA AL 100%) -->
+    <div class="rounded-3xl overflow-hidden p-5 bg-[#4A1153] shadow-md mt-4">
+      <div class="text-xs font-bold text-white mb-3 flex justify-between items-center">
+        <span>Más en Yape</span>
+        <span class="text-black bg-yellow-400 px-1.5 py-0.5 text-[9px] rounded uppercase font-black">Nuevo</span>
+      </div>
+      <div class="rounded-2xl overflow-hidden">
+        <!-- Cargando tu imagen correcta de manera directa y segura -->
+        <img src="https://i.postimg.cc/W3DvJwTz/6.webp" alt="Publicidad Yape" class="w-full h-auto object-cover">
+      </div>
+    </div>
+
   </div>
 
-  <!-- LÓGICA DE CONTROL LOCAL -->
+  <!-- LÓGICA DE CONTROL -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       
       const btnYapear = document.getElementById("btnYapear");
-      const btnCerrar = document.getElementById("btnCerrar");
-      const btnIrInicio = document.getElementById("btnIrInicio");
+      const btnNuevoYapeo = document.getElementById("btnNuevoYapeo");
+      const btnCerrarX = document.getElementById("btnCerrarX");
 
       if (btnYapear) {
         btnYapear.addEventListener("click", () => {
@@ -166,14 +183,20 @@
           const txtMontoFinal = document.getElementById("montoFinal");
           const txtNombreDestinatario = document.getElementById("nombreDestinatario");
           const txtCelularDestinatario = document.getElementById("celularDestinatario");
-          const txtFechaHora = document.getElementById("fechaHora");
+          const txtFechaTexto = document.getElementById("fechaTexto");
+          const txtHoraTexto = document.getElementById("horaTexto");
           const txtNumOperacion = document.getElementById("numOperacion");
           const imgPersonaje = document.getElementById("personajeFondo");
 
-          // 1. Mostrar Monto formateado con decimales
+          // Códigos de seguridad dinámicos
+          const txtCod1 = document.getElementById("cod1");
+          const txtCod2 = document.getElementById("cod2");
+          const txtCod3 = document.getElementById("cod3");
+
+          // 1. Mostrar Monto formateado estrictamente con decimales (.00)
           txtMontoFinal.textContent = inputMonto.toFixed(2);
 
-          // 2. Lógica Dinámica de Personajes Históricos según el Rango de Monto
+          // 2. Lógica Dinámica de Personajes Históricos según el Monto
           if (inputMonto >= 0.1 && inputMonto <= 19.99) {
             imgPersonaje.src = "10_soles-removebg-preview.png"; // José Quiñones
           } else if (inputMonto >= 20.00 && inputMonto <= 49.99) {
@@ -185,34 +208,46 @@
           } else if (inputMonto >= 200.00) {
             imgPersonaje.src = "200_soles-removebg-preview.png"; // Santa Rosa de Lima
           } else {
-            imgPersonaje.src = "10_soles-removebg-preview.png"; // Default
+            imgPersonaje.src = "10_soles-removebg-preview.png";
           }
 
           // 3. Pintar Datos del Destinatario
-          txtNombreDestinatario.textContent = inputNombre.trim() !== "" ? inputNombre : "Destinatario";
-          txtCelularDestinatario.textContent = inputCelular.trim() !== "" ? `• ${inputCelular}` : "• 955 100 282";
+          txtNombreDestinatario.textContent = inputNombre.trim() !== "" ? inputNombre : "Daniel Dav*";
+          txtCelularDestinatario.textContent = inputCelular.trim() !== "" ? inputCelular : "008";
 
-          // 4. Generar Fecha y Hora Actual automáticamente
+          // 4. Generar Fecha y Hora Actual de manera automatizada
           const ahora = new Date();
-          const meses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Set", "Oct", "Nov", "Dic"];
+          const meses = ["jul.", "ago.", "set.", "oct.", "nov.", "dic.", "ene.", "feb.", "mar.", "abr.", "may.", "jun."];
           const dia = ahora.getDate();
           const mes = meses[ahora.getMonth()];
           const anio = ahora.getFullYear();
-          const hora = String(ahora.getHours()).padStart(2, '0');
+          
+          let horas = ahora.getHours();
           const minutos = String(ahora.getMinutes()).padStart(2, '0');
-          txtFechaHora.textContent = `${dia} ${mes}. ${anio} - ${hora}:${minutos}`;
+          const ampm = horas >= 12 ? 'p. m.' : 'a. m.';
+          horas = horas % 12;
+          horas = horas ? horas : 12; // El valor 0 se convierte a 12
+          const horasFormateadas = String(horas).padStart(2, '0');
 
-          // 5. Generar Número de Operación de 8 dígitos al azar
+          txtFechaTexto.textContent = `${dia} ${mes} ${anio}`;
+          txtHoraTexto.textContent = `${horasFormateadas}:${minutos} ${ampm}`;
+
+          // 5. Generar Número de Operación aleatorio de 8 dígitos
           const numOpAzar = Math.floor(10000000 + Math.random() * 90000000);
           txtNumOperacion.textContent = numOpAzar;
 
-          // 6. Cambiar Pantalla (Ocultar Formulario, Mostrar Recibo)
+          // 6. Códigos de seguridad dinámicos
+          txtCod1.textContent = Math.floor(Math.random() * 10);
+          txtCod2.textContent = Math.floor(Math.random() * 10);
+          txtCod3.textContent = Math.floor(Math.random() * 10);
+
+          // 7. Mostrar Recibo y ocultar Formulario
           document.getElementById("seccionFormulario").classList.add("hidden");
           document.getElementById("seccionRecibo").classList.remove("hidden");
         });
       }
 
-      // Función para resetear los valores y volver al formulario
+      // Función para regresar al formulario inicial
       const regresarAlFormulario = () => {
         document.getElementById("inputMonto").value = "";
         document.getElementById("inputNombre").value = "";
@@ -221,8 +256,8 @@
         document.getElementById("seccionFormulario").classList.remove("hidden");
       };
 
-      if (btnCerrar) btnCerrar.addEventListener("click", regresarAlFormulario);
-      if (btnIrInicio) btnIrInicio.addEventListener("click", regresarAlFormulario);
+      if (btnNuevoYapeo) btnNuevoYapeo.addEventListener("click", regresarAlFormulario);
+      if (btnCerrarX) btnCerrarX.addEventListener("click", regresarAlFormulario);
 
     });
   </script>
