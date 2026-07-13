@@ -4,6 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Yape - Panel de Configuración</title>
+  
+  <!-- Vinculación del Manifiesto PWA -->
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#7B2E83">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="https://i.postimg.cc/W3DvJwTz/6.webp">
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -24,7 +32,7 @@
 <body class="min-h-screen flex flex-col items-center justify-center bg-[#5C1C6A] p-4 font-sans">
 
   <!-- Contenedor Principal -->
-  <div class="w-full max-w-sm bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col justify-between min-h-[550px]">
+  <div class="w-full max-w-sm bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col justify-between min-h-[570px] relative">
     
     <!-- Encabezado morado de Yape -->
     <div class="bg-yape text-white px-5 py-6 text-center relative">
@@ -53,6 +61,13 @@
       </div>
     </div>
 
+    <!-- Botón flotante/interior de Instalar App (Oculto por defecto) -->
+    <div id="pwaContainer" class="px-6 pb-2 hidden">
+      <button id="btnInstalar" class="w-full bg-yapeMint hover:bg-[#0eb39e] text-yapeInk py-2.5 rounded-xl font-bold text-xs uppercase tracking-wide transition flex items-center justify-center gap-2">
+        📥 Descargar App Yape
+      </button>
+    </div>
+
     <!-- Botón de acción inferior -->
     <div class="p-6 bg-gray-50 border-t border-gray-100">
       <button onclick="generarYapeo()" class="w-full bg-yape hover:bg-yapeDark text-white py-4 rounded-xl font-bold text-base transition-all duration-200 shadow-md transform active:scale-95">
@@ -63,8 +78,46 @@
   </div>
 
   <script>
+    // Registro del Service Worker para habilitar la PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('Service Worker registrado con éxito', reg))
+          .catch(err => console.error('Error al registrar Service Worker', err));
+      });
+    }
+
+    // Lógica para detectar e instalar la Aplicación Web
+    let deferredPrompt;
+    const pwaContainer = document.getElementById('pwaContainer');
+    const btnInstalar = document.getElementById('btnInstalar');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      // Prevenir el aviso por defecto del navegador
+      e.preventDefault();
+      deferredPrompt = e;
+      // Mostrar nuestro botón personalizado de instalación
+      pwaContainer.classList.remove('hidden');
+    });
+
+    btnInstalar.addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+      // Mostrar el prompt de instalación nativo
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      console.log(`User response to the install prompt: ${outcome}`);
+      deferredPrompt = null;
+      // Ocultar botón una vez instalado
+      pwaContainer.classList.add('hidden');
+    });
+
+    window.addEventListener('appinstalled', () => {
+      console.log('¡La aplicación de Yape se instaló correctamente!');
+      pwaContainer.classList.add('hidden');
+    });
+
+    // Código original de carga y generación
     document.addEventListener("DOMContentLoaded", () => {
-      // Precarga si ya existen datos previos
       if(localStorage.getItem("yape_nombre")) {
         document.getElementById("loginNombre").value = localStorage.getItem("yape_nombre");
         document.getElementById("loginNumero").value = localStorage.getItem("yape_numero");
@@ -85,10 +138,8 @@
       const numero = document.getElementById("loginNumero").value.trim() || "*** *** 025";
       const monto = document.getElementById("loginMonto").value.trim() || "200.00";
       
-      // Operación autogenerada de 8 dígitos
       const operacionAuto = Math.floor(10000000 + Math.random() * 90000000).toString();
 
-      // Capturar fecha y hora estática de este instante
       const ahora = new Date();
       const meses = ["ene.", "feb.", "mar.", "abr.", "may.", "jun.", "jul.", "ago.", "sep.", "oct.", "nov.", "dic."];
       let horas = ahora.getHours();
@@ -99,7 +150,6 @@
       const fechaFinal = `${ahora.getDate()} ${meses[ahora.getMonth()]} ${ahora.getFullYear()}`;
       const horaFinal = `${String(horas).padStart(2, '0')}:${minutos} ${ampm}`;
 
-      // Guardado persistente
       localStorage.setItem("yape_nombre", nombre);
       localStorage.setItem("yape_numero", numero);
       localStorage.setItem("yape_monto", parseFloat(monto).toFixed(2));
@@ -107,10 +157,8 @@
       localStorage.setItem("yape_fecha", fechaFinal);
       localStorage.setItem("yape_hora", horaFinal);
 
-      // Activamos la sesión
       sessionStorage.setItem("admin_session", "active");
 
-      // Redirige al recibo
       window.location.href = "recibo.html"; 
     }
   </script>
