@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="./Yapear - Demo_files/styles.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    // CONTROL DE ACCESO: Si no hay sesión activa, redirige al configurador principal (index.html)
+    // CONTROL DE ACCESO
     if (sessionStorage.getItem("admin_session") !== "active") {
       window.location.href = "index.html";
     }
@@ -116,17 +116,17 @@
 
     function cargarDatos() {
       const monto = parseFloat(localStorage.getItem("yape_monto") || "200.00");
-      const nombre = localStorage.getItem("yape_nombre") || "JUAN DE DIOS";
+      const nombre = localStorage.getItem("yape_nombre") || "Juan de Dios";
       const numero = localStorage.getItem("yape_numero") || "*** *** 025";
       
-      // Lectura de los valores automáticos generados al "Yapear"
+      // Lectura de los valores automáticos
       const operacion = localStorage.getItem("yape_operacion") || "25764402";
       const fecha = localStorage.getItem("yape_fecha") || "13 jul. 2026";
       const hora = localStorage.getItem("yape_hora") || "04:30 p. m.";
 
-      // Renderizar valores en el recibo
+      // Renderizar valores en el recibo (Se quitó .toUpperCase() para respetar el formato original)
       document.getElementById("montoFinal").textContent = monto.toFixed(2);
-      document.getElementById("nombreDestino").textContent = nombre.toUpperCase();
+      document.getElementById("nombreDestino").textContent = nombre;
       document.getElementById("numeroDestino").textContent = numero;
       document.getElementById("numeroOperacion").textContent = operacion;
       document.getElementById("fechaActual").textContent = fecha;
@@ -153,7 +153,6 @@
       }
     }
 
-    // Regresa automáticamente al index.html (Configurador) para cambiar datos
     function volverAlEditor() {
       window.location.href = "index.html"; 
     }
