@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Yape - Ingresar Datos</title>
+  <title>Yape - Panel de Configuración</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -23,17 +23,20 @@
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center bg-[#5C1C6A] p-4 font-sans">
 
-  <!-- Contenedor Principal estilo Teléfono/Yape -->
-  <div class="w-full max-w-sm bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col justify-between min-h-[600px]">
+  <!-- Contenedor Principal -->
+  <div class="w-full max-w-sm bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col justify-between min-h-[550px]">
     
     <!-- Encabezado morado de Yape -->
-    <div class="bg-yape text-white px-5 py-6 text-center">
+    <div class="bg-yape text-white px-5 py-6 text-center relative">
       <h1 class="font-bold text-xl tracking-wide">Yapear a un contacto</h1>
-      <p class="text-xs text-purple-200 mt-1">Configura los datos para generar tu recibo</p>
+      <p class="text-xs text-purple-200 mt-1">Configura los datos del recibo</p>
+      <button onclick="limpiarCampos()" class="absolute top-2 right-2 text-[10px] bg-red-600 hover:bg-red-700 text-white font-bold px-2 py-1 rounded">
+        Resetear
+      </button>
     </div>
 
-    <!-- Formulario Editable (Sin Contraseña) -->
-    <div class="px-6 py-6 flex-grow space-y-4">
+    <!-- Formulario Editable -->
+    <div class="px-6 py-4 flex-grow space-y-4">
       <div>
         <label class="block text-xs font-bold text-yapeInk mb-1 uppercase tracking-wider">Nombre del Destinatario</label>
         <input id="loginNombre" type="text" placeholder="Ej. JUAN DE DIOS" class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-yape/30 transition">
@@ -46,12 +49,7 @@
 
       <div>
         <label class="block text-xs font-bold text-yapeInk mb-1 uppercase tracking-wider">Monto (S/)</label>
-        <input id="loginMonto" type="number" step="0.01" placeholder="0.00" class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-yape/30 transition">
-      </div>
-
-      <div>
-        <label class="block text-xs font-bold text-yapeInk mb-1 uppercase tracking-wider">Número de Operación</label>
-        <input id="loginOperacion" type="text" placeholder="Ej. 25764402" class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-yape/30 transition">
+        <input id="loginMonto" type="number" step="0.01" placeholder="200.00" class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-yape/30 transition">
       </div>
     </div>
 
@@ -65,32 +63,54 @@
   </div>
 
   <script>
-    // Generar un número de operación aleatorio por defecto por si el usuario no ingresa uno
     document.addEventListener("DOMContentLoaded", () => {
-      const randomOp = Math.floor(10000000 + Math.random() * 90000000);
-      document.getElementById("loginOperacion").placeholder = `Ej. ${randomOp}`;
+      // Si ya existen datos previos guardados, los precargamos en el formulario
+      if(localStorage.getItem("yape_nombre")) {
+        document.getElementById("loginNombre").value = localStorage.getItem("yape_nombre");
+        document.getElementById("loginNumero").value = localStorage.getItem("yape_numero");
+        document.getElementById("loginMonto").value = localStorage.getItem("yape_monto");
+      }
     });
 
+    function limpiarCampos() {
+      localStorage.clear();
+      document.getElementById("loginNombre").value = "";
+      document.getElementById("loginNumero").value = "";
+      document.getElementById("loginMonto").value = "";
+      alert("Configuración reseteada.");
+    }
+
     function generarYapeo() {
-      // 1. Capturar los campos del formulario
       const nombre = document.getElementById("loginNombre").value.trim() || "JUAN DE DIOS";
       const numero = document.getElementById("loginNumero").value.trim() || "*** *** 025";
       const monto = document.getElementById("loginMonto").value.trim() || "200.00";
       
-      // Si la operación está vacía, genera la aleatoria que está de placeholder
-      const operacionPlaceholder = document.getElementById("loginOperacion").placeholder.replace("Ej. ", "");
-      const operacion = document.getElementById("loginOperacion").value.trim() || operacionPlaceholder;
+      // 1. Generar número de operación aleatorio de 8 dígitos automáticamente en cada "Yapeo"
+      const operacionAuto = Math.floor(10000000 + Math.random() * 90000000).toString();
 
-      // 2. Guardar los datos de manera persistente en LocalStorage
+      // 2. Capturar y formatear la fecha y hora exacta de la transacción en este instante
+      const ahora = new Date();
+      const meses = ["ene.", "feb.", "mar.", "abr.", "may.", "jun.", "jul.", "ago.", "sep.", "oct.", "nov.", "dic."];
+      let horas = ahora.getHours();
+      const minutos = String(ahora.getMinutes()).padStart(2, '0');
+      const ampm = horas >= 12 ? 'p. m.' : 'a. m.';
+      horas = horas % 12 || 12;
+
+      const fechaFinal = `${ahora.getDate()} ${meses[ahora.getMonth()]} ${ahora.getFullYear()}`;
+      const horaFinal = `${String(horas).padStart(2, '0')}:${minutos} ${ampm}`;
+
+      // 3. Guardamos los datos en LocalStorage
       localStorage.setItem("yape_nombre", nombre);
       localStorage.setItem("yape_numero", numero);
       localStorage.setItem("yape_monto", parseFloat(monto).toFixed(2));
-      localStorage.setItem("yape_operacion", operacion);
+      localStorage.setItem("yape_operacion", operacionAuto); // Operación autogenerada
+      localStorage.setItem("yape_fecha", fechaFinal);        // Fecha de captura estática
+      localStorage.setItem("yape_hora", horaFinal);          // Hora de captura estática
 
-      // 3. ¡IMPORTANTE! Activar sesión para que la pantalla de confirmación no te bote al login.html
+      // Activamos la sesión
       sessionStorage.setItem("admin_session", "active");
 
-      // 4. Redirigir a tu archivo principal del recibo (asumiendo que se llama index.html)
+      // Redirigimos al recibo limpio (index.html)
       window.location.href = "index.html"; 
     }
   </script>
