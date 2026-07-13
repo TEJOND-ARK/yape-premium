@@ -8,6 +8,11 @@
   <link rel="stylesheet" href="./Yapear - Demo_files/styles.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
+    // CONTROL DE ACCESO
+    if (sessionStorage.getItem("admin_session") !== "active") {
+      window.location.href = "login.html";
+    }
+
     tailwind.config = {
       theme: {
         extend: {
@@ -33,50 +38,16 @@
     }
   </script>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-start bg-[#5C1C6A] p-4 font-sans relative">
+<body onclick="volverAlEditor()" class="min-h-screen flex flex-col items-center justify-start bg-[#5C1C6A] p-4 font-sans relative cursor-pointer">
 
-  <!-- BOTÓN SECRETO E INVISIBLE EN LA ESQUINA SUPERIOR DERECHA PARA ENTRAR AL LOGIN -->
-  <a id="btnAcceder" href="login.html" class="absolute top-0 right-0 w-12 h-12 opacity-0 cursor-default z-50"></a>
-
-  <!-- ================= FORMULARIO DE EDICIÓN (SOLO SI INICIAS SESIÓN) ================= -->
-  <div id="editorPanel" class="hidden w-full max-w-sm bg-white rounded-2xl shadow-xl p-5 mb-6 border-2 border-yape text-yapeInk z-50">
-    <div class="flex justify-between items-center mb-4">
-      <h2 class="text-md font-bold text-yape">Modificar Recibo</h2>
-      <button onclick="cerrarSesion()" class="text-xs text-red-500 font-bold hover:underline">Salir de edición</button>
-    </div>
-    
-    <div class="space-y-3 text-xs">
-      <div>
-        <label class="block font-semibold text-gray-600">Nombre del Destinatario</label>
-        <input id="editNombre" type="text" class="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:outline-none focus:ring-1 focus:ring-yape">
-      </div>
-      <div>
-        <label class="block font-semibold text-gray-600">Número de Celular</label>
-        <input id="editNumero" type="text" class="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:outline-none focus:ring-1 focus:ring-yape">
-      </div>
-      <div>
-        <label class="block font-semibold text-gray-600">Monto (S/)</label>
-        <input id="editMonto" type="number" step="0.01" class="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:outline-none focus:ring-1 focus:ring-yape">
-      </div>
-      <div>
-        <label class="block font-semibold text-gray-600">Nro. de Operación</label>
-        <input id="editOperacion" type="text" class="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:outline-none focus:ring-1 focus:ring-yape">
-      </div>
-      <button onclick="actualizarRecibo()" class="w-full bg-yape text-white py-2 rounded-lg font-bold hover:bg-yapeDark transition">
-        Guardar Cambios
-      </button>
-    </div>
-  </div>
-
-  <!-- ================= VISTA DEL RECIBO DIGITAL ================= -->
-  <div class="w-full max-w-sm bg-transparent rounded-2xl overflow-hidden">
+  <!-- VISTA DEL RECIBO DIGITAL -->
+  <div class="w-full max-w-sm bg-transparent rounded-2xl overflow-hidden mt-4" onclick="event.stopPropagation();">
     <div class="px-4 py-3">
       
-      <!-- ================= SECCIÓN SUPERIOR: FOTO DINÁMICA DEL PERSONAJE HISTÓRICO ================= -->
+      <!-- SECCIÓN SUPERIOR: FOTO DINÁMICA DEL PERSONAJE HISTÓRICO -->
       <div class="relative w-full rounded-2xl overflow-hidden mb-4 shadow-md">
-        <!-- El banner dinámico cambia de personaje según el monto -->
         <img id="bannerHistorial" src="" alt="Personaje Histórico" class="w-full h-auto object-contain transition-all duration-300">
-        <!-- Brillo dinámico sobre el personaje -->
+        <!-- Brillo dinámico -->
         <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-shimmer pointer-events-none"></div>
       </div>
 
@@ -84,7 +55,7 @@
       <div class="bg-white rounded-2xl shadow-md p-5">
         <div class="flex justify-between items-center">
           <h1 class="text-[#863C95] font-bold text-[20px]">¡Yapeaste!</h1>
-          <span class="text-yapeMint font-semibold flex items-center text-[14px] cursor-pointer">
+          <span onclick="volverAlEditor()" class="text-yapeMint font-semibold flex items-center text-[14px] cursor-pointer">
             <i class="pi pi-share-alt mr-2"></i> COMPARTIR
           </span>
         </div>
@@ -124,13 +95,12 @@
         </div>
       </div>
 
-      <!-- ================= SECCIÓN INFERIOR: PUBLICIDAD DE ABAJO ESTÁTICA ================= -->
+      <!-- SECCIÓN INFERIOR: PUBLICIDAD ESTÁTICA -->
       <div class="mt-4 rounded-2xl overflow-hidden p-4 bg-[#4A1153] shadow-md">
         <div class="text-sm font-semibold text-white mb-3 flex justify-between items-center">
           <span>Más en Yape</span>
           <span class="text-black rounded-md px-2 text-[11px] bg-[#f5c035] py-0.5 font-bold">Nuevo</span>
         </div>
-        <!-- Tu imagen de publicidad fija de abajo -->
         <div class="rounded-xl overflow-hidden">
           <img src="./Yapear - Demo_files/banner_publicitario.png" alt="Publicidad Yape" class="w-full h-auto object-cover" onerror="this.src='https://i.postimg.cc/W3DvJwTz/6.webp'">
         </div>
@@ -141,41 +111,26 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      // Si ya hay una sesión de admin, mostrar el panel
-      if (sessionStorage.getItem("admin_session") === "active") {
-        document.getElementById("editorPanel").classList.remove("hidden");
-        document.getElementById("btnAcceder").classList.add("hidden"); 
-      }
-
       cargarDatos();
-
-      // Configuración de fecha y hora del sistema
-      const ahora = new Date();
-      const meses = ["ene.", "feb.", "mar.", "abr.", "may.", "jun.", "jul.", "ago.", "sep.", "oct.", "nov.", "dic."];
-      let horas = ahora.getHours();
-      const minutos = String(ahora.getMinutes()).padStart(2, '0');
-      const ampm = horas >= 12 ? 'p. m.' : 'a. m.';
-      horas = horas % 12 || 12;
-
-      document.getElementById("fechaActual").textContent = `${ahora.getDate()} ${meses[ahora.getMonth()]} ${ahora.getFullYear()}`;
-      document.getElementById("horaActual").textContent = `${String(horas).padStart(2, '0')}:${minutos} ${ampm}`;
     });
 
     function cargarDatos() {
       const monto = parseFloat(localStorage.getItem("yape_monto") || "200.00");
       const nombre = localStorage.getItem("yape_nombre") || "JUAN DE DIOS";
       const numero = localStorage.getItem("yape_numero") || "*** *** 025";
+      
+      // Lectura de los nuevos valores automáticos generados al "Yapear"
       const operacion = localStorage.getItem("yape_operacion") || "25764402";
+      const fecha = localStorage.getItem("yape_fecha") || "13 jul. 2026";
+      const hora = localStorage.getItem("yape_hora") || "04:30 p. m.";
 
+      // Renderizar valores en el recibo
       document.getElementById("montoFinal").textContent = monto.toFixed(2);
       document.getElementById("nombreDestino").textContent = nombre.toUpperCase();
       document.getElementById("numeroDestino").textContent = numero;
       document.getElementById("numeroOperacion").textContent = operacion;
-
-      document.getElementById("editNombre").value = nombre;
-      document.getElementById("editNumero").value = numero;
-      document.getElementById("editMonto").value = monto.toFixed(2);
-      document.getElementById("editOperacion").value = operacion;
+      document.getElementById("fechaActual").textContent = fecha;
+      document.getElementById("horaActual").textContent = hora;
 
       asignarBannerPersonaje(monto);
     }
@@ -198,18 +153,8 @@
       }
     }
 
-    function actualizarRecibo() {
-      localStorage.setItem("yape_nombre", document.getElementById("editNombre").value);
-      localStorage.setItem("yape_numero", document.getElementById("editNumero").value);
-      localStorage.setItem("yape_monto", parseFloat(document.getElementById("editMonto").value).toFixed(2));
-      localStorage.setItem("yape_operacion", document.getElementById("editOperacion").value);
-      
-      cargarDatos();
-    }
-
-    function cerrarSesion() {
-      sessionStorage.removeItem("admin_session");
-      window.location.reload(); 
+    function volverAlEditor() {
+      window.location.href = "login.html"; 
     }
   </script>
 </body>
