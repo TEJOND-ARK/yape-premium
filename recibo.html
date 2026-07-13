@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yapear - Confirmación</title>
+  <link rel="stylesheet" href="./Yapear - Demo_files/primeicons.css">
+  <link rel="stylesheet" href="./Yapear - Demo_files/styles.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // CONTROL DE ACCESO: Si no hay sesión activa, redirige al configurador principal (index.html)
+    if (sessionStorage.getItem("admin_session") !== "active") {
+      window.location.href = "index.html";
+    }
+
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            yape: "#7B2E83",
+            yapeDark: "#5C1C6A",
+            yapeBtn: "#8C3D99",
+            yapeMint: "#10cbb4",
+            yapeInk: "#3D3556"
+          },
+          keyframes: {
+            shimmer: {
+              '0%': { transform: 'translateX(-150%)' },
+              '50%': { transform: 'translateX(150%)' },
+              '100%': { transform: 'translateX(150%)' }
+            }
+          },
+          animation: {
+            shimmer: 'shimmer 3.5s infinite'
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body onclick="volverAlEditor()" class="min-h-screen flex flex-col items-center justify-start bg-[#5C1C6A] p-4 font-sans relative cursor-pointer">
+
+  <!-- VISTA DEL RECIBO DIGITAL -->
+  <div class="w-full max-w-sm bg-transparent rounded-2xl overflow-hidden mt-4" onclick="event.stopPropagation();">
+    <div class="px-4 py-3">
+      
+      <!-- SECCIÓN SUPERIOR: FOTO DINÁMICA DEL PERSONAJE HISTÓRICO -->
+      <div class="relative w-full rounded-2xl overflow-hidden mb-4 shadow-md">
+        <img id="bannerHistorial" src="" alt="Personaje Histórico" class="w-full h-auto object-contain transition-all duration-300">
+        <!-- Brillo dinámico -->
+        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-shimmer pointer-events-none"></div>
+      </div>
+
+      <!-- Tarjeta del Recibo -->
+      <div class="bg-white rounded-2xl shadow-md p-5">
+        <div class="flex justify-between items-center">
+          <h1 class="text-[#863C95] font-bold text-[20px]">¡Yapeaste!</h1>
+          <span onclick="volverAlEditor()" class="text-yapeMint font-semibold flex items-center text-[14px] cursor-pointer">
+            <i class="pi pi-share-alt mr-2"></i> COMPARTIR
+          </span>
+        </div>
+
+        <div class="mt-4">
+          <div class="flex items-baseline">
+            <p class="text-yapeInk text-3xl font-bold mr-1">S/</p>
+            <p id="montoFinal" class="text-yapeInk text-5xl font-bold tracking-tight">0.00</p>
+          </div>
+
+          <p id="nombreDestino" class="text-yapeInk text-xl font-bold my-2">CARGANDO...</p>
+
+          <div class="flex items-center gap-1 text-gray-500 font-semibold text-[13px] mt-1">
+            <i class="pi pi-calendar"></i>
+            <span id="fechaActual">-- ---. ----</span>
+            <span class="mx-1">|</span>
+            <i class="pi pi-clock"></i>
+            <span id="horaActual">--:-- --. --.</span>
+          </div>
+          <hr class="border-gray-200 my-3">
+        </div>
+
+        <!-- Datos de Transacción -->
+        <div class="space-y-2 text-[14px] pb-2">
+          <div class="flex justify-between">
+            <p class="text-[#3e364e]">Nro. de celular</p>
+            <p class="text-[#3e364e] font-bold" id="numeroDestino">*** *** ***</p>
+          </div>
+          <div class="flex justify-between">
+            <p class="text-[#3e364e]">Destino</p>
+            <p class="text-[#3e364e] font-bold">Yape</p>
+          </div>
+          <div class="flex justify-between">
+            <p class="text-[#3e364e]">Nro. de operación</p>
+            <p class="text-[#3e364e] font-bold" id="numeroOperacion">00000000</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECCIÓN INFERIOR: PUBLICIDAD ESTÁTICA -->
+      <div class="mt-4 rounded-2xl overflow-hidden p-4 bg-[#4A1153] shadow-md">
+        <div class="text-sm font-semibold text-white mb-3 flex justify-between items-center">
+          <span>Más en Yape</span>
+          <span class="text-black rounded-md px-2 text-[11px] bg-[#f5c035] py-0.5 font-bold">Nuevo</span>
+        </div>
+        <div class="rounded-xl overflow-hidden">
+          <img src="./Yapear - Demo_files/banner_publicitario.png" alt="Publicidad Yape" class="w-full h-auto object-cover" onerror="this.src='https://i.postimg.cc/W3DvJwTz/6.webp'">
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      cargarDatos();
+    });
+
+    function cargarDatos() {
+      const monto = parseFloat(localStorage.getItem("yape_monto") || "200.00");
+      const nombre = localStorage.getItem("yape_nombre") || "JUAN DE DIOS";
+      const numero = localStorage.getItem("yape_numero") || "*** *** 025";
+      
+      // Lectura de los valores automáticos generados al "Yapear"
+      const operacion = localStorage.getItem("yape_operacion") || "25764402";
+      const fecha = localStorage.getItem("yape_fecha") || "13 jul. 2026";
+      const hora = localStorage.getItem("yape_hora") || "04:30 p. m.";
+
+      // Renderizar valores en el recibo
+      document.getElementById("montoFinal").textContent = monto.toFixed(2);
+      document.getElementById("nombreDestino").textContent = nombre.toUpperCase();
+      document.getElementById("numeroDestino").textContent = numero;
+      document.getElementById("numeroOperacion").textContent = operacion;
+      document.getElementById("fechaActual").textContent = fecha;
+      document.getElementById("horaActual").textContent = hora;
+
+      asignarBannerPersonaje(monto);
+    }
+
+    function asignarBannerPersonaje(monto) {
+      const imgElement = document.getElementById("bannerHistorial");
+      
+      if (monto >= 0.1 && monto <= 19.99) {
+        imgElement.src = "./10_soles-removebg-preview.png";
+      } else if (monto >= 20.00 && monto <= 49.99) {
+        imgElement.src = "./20_soles-removebg-preview.png";
+      } else if (monto >= 50.00 && monto <= 99.99) {
+        imgElement.src = "./50_soles-removebg-preview.png";
+      } else if (monto >= 100.00 && monto <= 199.99) {
+        imgElement.src = "./100_soles-removebg-preview.png";
+      } else if (monto >= 200.00 && monto <= 1000.00) {
+        imgElement.src = "./200_soles-removebg-preview.png";
+      } else {
+        imgElement.src = "./200_soles-removebg-preview.png";
+      }
+    }
+
+    // Regresa automáticamente al index.html (Configurador) para cambiar datos
+    function volverAlEditor() {
+      window.location.href = "index.html"; 
+    }
+  </script>
+</body>
+</html>
