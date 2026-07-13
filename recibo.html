@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Yapear - Confirmación</title>
-  <link rel="stylesheet" href="./Yapear - Demo_files/primeicons.css">
-  <link rel="stylesheet" href="./Yapear - Demo_files/styles.css">
+  <!-- Iconos Lucide elegantes y limpios -->
+  <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     // CONTROL DE ACCESO
@@ -17,122 +17,159 @@
       theme: {
         extend: {
           colors: {
-            yape: "#7B2E83",
-            yapeDark: "#5C1C6A",
-            yapeBtn: "#8C3D99",
+            yapeBg: "#5C1C6A",
+            yapeTxt: "#3D3556",
+            yapePurple: "#7B2E83",
             yapeMint: "#10cbb4",
-            yapeInk: "#3D3556"
-          },
-          keyframes: {
-            shimmer: {
-              '0%': { transform: 'translateX(-150%)' },
-              '50%': { transform: 'translateX(150%)' },
-              '100%': { transform: 'translateX(150%)' }
-            }
-          },
-          animation: {
-            shimmer: 'shimmer 3.5s infinite'
+            yapeMintDark: "#0eb39e",
+            yapeGray: "#F3F4F6"
           }
         }
       }
     }
   </script>
 </head>
-<body onclick="volverAlEditor()" class="min-h-screen flex flex-col items-center justify-start bg-[#5C1C6A] p-4 font-sans relative cursor-pointer">
+<body class="min-h-screen bg-yapeBg font-sans select-none overflow-y-auto scroll-smooth flex flex-col items-center justify-start pb-12">
 
-  <!-- VISTA DEL RECIBO DIGITAL -->
-  <div class="w-full max-w-sm bg-transparent rounded-2xl overflow-hidden mt-4" onclick="event.stopPropagation();">
-    <div class="px-4 py-3">
+  <!-- CONTENEDOR PRINCIPAL CON SCROLL LIBRE -->
+  <div class="w-full max-w-sm px-5 pt-3 flex flex-col">
+    
+    <!-- SECCIÓN BILLETE + BOTÓN X -->
+    <div class="relative w-full rounded-3xl overflow-hidden mb-4 shadow-md">
+      <img id="bannerHistorial" src="" alt="Billete Histórico" class="w-full h-auto object-contain">
       
-      <!-- SECCIÓN SUPERIOR: FOTO DINÁMICA DEL PERSONAJE HISTÓRICO -->
-      <div class="relative w-full rounded-2xl overflow-hidden mb-4 shadow-md">
-        <img id="bannerHistorial" src="" alt="Personaje Histórico" class="w-full h-auto object-contain transition-all duration-300">
-        <!-- Brillo dinámico -->
-        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-shimmer pointer-events-none"></div>
+      <!-- Botón X de cerrar original -->
+      <button onclick="volverAlEditor()" class="absolute top-4 right-4 bg-black/30 text-white rounded-full p-2 hover:bg-black/40 transition flex items-center justify-center">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <!-- TARJETA BLANCA DEL RECIBO -->
+    <div class="bg-white rounded-3xl p-6 shadow-xl mb-4">
+      
+      <!-- Fila: ¡Yapeaste! + Compartir -->
+      <div class="flex justify-between items-center mb-5">
+        <h1 class="text-yapePurple font-bold text-2xl tracking-tight">¡Yapeaste!</h1>
+        <button onclick="volverAlEditor()" class="text-yapeMint hover:text-yapeMintDark font-semibold flex items-center gap-1.5 text-base">
+          <i data-lucide="share-2" class="w-4.5 h-4.5"></i> Compartir
+        </button>
       </div>
 
-      <!-- Tarjeta del Recibo -->
-      <div class="bg-white rounded-2xl shadow-md p-5">
-        <div class="flex justify-between items-center">
-          <h1 class="text-[#863C95] font-bold text-[20px]">¡Yapeaste!</h1>
-          <span onclick="volverAlEditor()" class="text-yapeMint font-semibold flex items-center text-[14px] cursor-pointer">
-            <i class="pi pi-share-alt mr-2"></i> COMPARTIR
-          </span>
+      <!-- Fila: S/ Monto -->
+      <div class="flex items-baseline mb-4 text-yapeTxt">
+        <span class="text-3xl font-bold mr-2">S/</span>
+        <span id="montoFinal" class="text-5.5xl font-normal tracking-tight leading-none">0</span>
+      </div>
+
+      <!-- Nombre con asterisco automático -->
+      <p id="nombreDestino" class="text-yapeTxt text-[21px] font-bold mb-3"></p>
+
+      <!-- Fecha y Hora con Iconos -->
+      <div class="flex items-center gap-1.5 text-gray-500 font-medium text-sm mb-5">
+        <i data-lucide="calendar" class="w-4 h-4"></i>
+        <span id="fechaActual">-- ---. ----</span>
+        <span class="text-gray-300 mx-0.5">|</span>
+        <i data-lucide="clock" class="w-4 h-4"></i>
+        <span id="horaActual">--:-- --. --.</span>
+      </div>
+
+      <!-- CÓDIGO DE SEGURIDAD INTERMITENTE -->
+      <div class="border-t border-b border-gray-100 py-4 flex justify-between items-center mb-5">
+        <div class="flex items-center gap-1.5">
+          <span class="text-xs font-bold text-gray-400 tracking-wider">CÓDIGO DE SEGURIDAD</span>
+          <div class="bg-yapeMint text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] font-bold">i</div>
         </div>
-
-        <div class="mt-4">
-          <div class="flex items-baseline">
-            <p class="text-yapeInk text-3xl font-bold mr-1">S/</p>
-            <p id="montoFinal" class="text-yapeInk text-5xl font-bold tracking-tight">0.00</p>
-          </div>
-
-          <p id="nombreDestino" class="text-yapeInk text-xl font-bold my-2">CARGANDO...</p>
-
-          <div class="flex items-center gap-1 text-gray-500 font-semibold text-[13px] mt-1">
-            <i class="pi pi-calendar"></i>
-            <span id="fechaActual">-- ---. ----</span>
-            <span class="mx-1">|</span>
-            <i class="pi pi-clock"></i>
-            <span id="horaActual">--:-- --. --.</span>
-          </div>
-          <hr class="border-gray-200 my-3">
-        </div>
-
-        <!-- Datos de Transacción -->
-        <div class="space-y-2 text-[14px] pb-2">
-          <div class="flex justify-between">
-            <p class="text-[#3e364e]">Nro. de celular</p>
-            <p class="text-[#3e364e] font-bold" id="numeroDestino">*** *** ***</p>
-          </div>
-          <div class="flex justify-between">
-            <p class="text-[#3e364e]">Destino</p>
-            <p class="text-[#3e364e] font-bold">Yape</p>
-          </div>
-          <div class="flex justify-between">
-            <p class="text-[#3e364e]">Nro. de operación</p>
-            <p class="text-[#3e364e] font-bold" id="numeroOperacion">00000000</p>
-          </div>
+        <div class="flex gap-1.5">
+          <span class="bg-gray-100 text-yapeTxt font-bold px-3 py-1 rounded-md text-sm shadow-sm" id="cod1">1</span>
+          <span class="bg-gray-100 text-yapeTxt font-bold px-3 py-1 rounded-md text-sm shadow-sm" id="cod2">6</span>
+          <span class="bg-gray-100 text-yapeTxt font-bold px-3 py-1 rounded-md text-sm shadow-sm" id="cod3">6</span>
         </div>
       </div>
 
-      <!-- SECCIÓN INFERIOR: PUBLICIDAD ESTÁTICA -->
-      <div class="mt-4 rounded-2xl overflow-hidden p-4 bg-[#4A1153] shadow-md">
-        <div class="text-sm font-semibold text-white mb-3 flex justify-between items-center">
-          <span>Más en Yape</span>
-          <span class="text-black rounded-md px-2 text-[11px] bg-[#f5c035] py-0.5 font-bold">Nuevo</span>
+      <!-- DETALLE DE TRANSACCIÓN -->
+      <p class="text-[11px] font-bold text-gray-400 tracking-widest mb-4">DATOS DE LA TRANSACCIÓN</p>
+
+      <div class="space-y-3.5 text-[15px] text-yapeTxt">
+        <div class="flex justify-between">
+          <span class="font-normal text-gray-500">Nro. de celular</span>
+          <span class="font-bold tracking-wide" id="numeroDestino">*** *** 008</span>
         </div>
-        <div class="rounded-xl overflow-hidden">
-          <img src="./Yapear - Demo_files/banner_publicitario.png" alt="Publicidad Yape" class="w-full h-auto object-cover" onerror="this.src='https://i.postimg.cc/W3DvJwTz/6.webp'">
+        <div class="flex justify-between">
+          <span class="font-normal text-gray-500">Destino</span>
+          <span class="font-bold">Yape</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="font-normal text-gray-500">Nro. de operación</span>
+          <span class="font-bold tracking-wide" id="numeroOperacion">19961166</span>
         </div>
       </div>
 
     </div>
+
+    <!-- BOTONES DE ACCIÓN (Estilo nativo extendido) -->
+    <div class="space-y-3 mb-6">
+      <button onclick="volverAlEditor()" class="w-full bg-yapeMint hover:bg-yapeMintDark text-yapeTxt py-4 rounded-2xl font-bold text-base transition flex items-center justify-center gap-2 shadow-md">
+        <i data-lucide="send" class="w-5 h-5"></i> Nuevo Yapeo
+      </button>
+      
+      <button onclick="volverAlEditor()" class="w-full bg-transparent text-white py-3 rounded-2xl font-bold text-sm transition flex items-center justify-center gap-2 hover:bg-white/5">
+        <i data-lucide="headphones" class="w-5 h-5"></i> Necesito ayuda
+      </button>
+    </div>
+
+    <!-- SECCIÓN PUBLICITARIA FLOTANTE (Al final del scroll) -->
+    <div class="rounded-3xl overflow-hidden p-5 bg-[#4A1153] shadow-md">
+      <div class="text-sm font-semibold text-white mb-3.5 flex justify-between items-center">
+        <span>Más en Yape</span>
+        <span class="text-black rounded-md px-2 py-0.5 text-[11px] bg-[#f5c035] font-bold">Nuevo</span>
+      </div>
+      <div class="rounded-2xl overflow-hidden">
+        <img src="https://i.postimg.cc/9FmSbyXk/banner-yape-promo.jpg" alt="Publicidad Yape" class="w-full h-auto object-cover" onerror="this.src='https://i.postimg.cc/W3DvJwTz/6.webp'">
+      </div>
+    </div>
+
   </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       cargarDatos();
+      lucide.createIcons(); // Carga todos los iconos vectorizados
     });
 
     function cargarDatos() {
-      const monto = parseFloat(localStorage.getItem("yape_monto") || "200.00");
-      const nombre = localStorage.getItem("yape_nombre") || "Juan de Dios";
-      const numero = localStorage.getItem("yape_numero") || "*** *** 025";
-      
-      // Lectura de los valores automáticos
-      const operacion = localStorage.getItem("yape_operacion") || "25764402";
+      const montoRaw = parseFloat(localStorage.getItem("yape_monto") || "1.00");
+      const nombre = localStorage.getItem("yape_nombre") || "Daniel Dav";
+      const numero = localStorage.getItem("yape_numero") || "*** *** 008";
+      const operacion = localStorage.getItem("yape_operacion") || "19961166";
       const fecha = localStorage.getItem("yape_fecha") || "13 jul. 2026";
-      const hora = localStorage.getItem("yape_hora") || "04:30 p. m.";
+      const hora = localStorage.getItem("yape_hora") || "03:15 p. m.";
 
-      // Renderizar valores en el recibo (Se quitó .toUpperCase() para respetar el formato original)
-      document.getElementById("montoFinal").textContent = monto.toFixed(2);
-      document.getElementById("nombreDestino").textContent = nombre;
+      // Formatear monto nativo (quitar decimales .00 si es entero)
+      if (montoRaw % 1 === 0) {
+        document.getElementById("montoFinal").textContent = parseInt(montoRaw);
+      } else {
+        document.getElementById("montoFinal").textContent = montoRaw.toFixed(2);
+      }
+
+      // Añadir automáticamente asterisco al nombre si no lo trae
+      if (!nombre.endsWith('*')) {
+        document.getElementById("nombreDestino").textContent = nombre + "*";
+      } else {
+        document.getElementById("nombreDestino").textContent = nombre;
+      }
+
       document.getElementById("numeroDestino").textContent = numero;
       document.getElementById("numeroOperacion").textContent = operacion;
       document.getElementById("fechaActual").textContent = fecha;
       document.getElementById("horaActual").textContent = hora;
 
-      asignarBannerPersonaje(monto);
+      // Generar código de seguridad dinámico basado en los últimos 3 números de operación
+      const ultimosTres = operacion.slice(-3);
+      document.getElementById("cod1").textContent = ultimosTres[0] || "1";
+      document.getElementById("cod2").textContent = ultimosTres[1] || "6";
+      document.getElementById("cod3").textContent = ultimosTres[2] || "6";
+
+      asignarBannerPersonaje(montoRaw);
     }
 
     function asignarBannerPersonaje(monto) {
