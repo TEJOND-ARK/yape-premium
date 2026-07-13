@@ -30,10 +30,10 @@
     }
   </style>
 </head>
-<body class="flex flex-col items-center min-h-screen font-sans p-4">
+<body class="flex flex-col items-center min-h-screen font-sans bg-[#5C1C6A]">
 
   <!-- 1. FORMULARIO DE INGRESO (Se oculta al yapear) -->
-  <div id="seccionFormulario" class="bg-white rounded-3xl shadow-xl w-full max-w-sm p-6 border border-gray-100 my-auto">
+  <div id="seccionFormulario" class="bg-white rounded-3xl shadow-xl w-[90%] max-w-sm p-6 border border-gray-100 my-auto">
     <h2 class="text-xl font-bold text-yapeInk mb-4 text-center">Generar Yape</h2>
     
     <div class="space-y-4">
@@ -62,20 +62,21 @@
     </div>
   </div>
 
-  <!-- 2. VISTA DEL RECIBO COMPLETO (Estructura oficial de tu captura) -->
-  <div id="seccionRecibo" class="hidden w-full max-w-sm flex flex-col space-y-4">
+  <!-- 2. VISTA DEL RECIBO COMPLETO (Ajustado para abarcar de punta a punta) -->
+  <div id="seccionRecibo" class="hidden w-full max-w-md flex flex-col items-center space-y-4 px-4 pt-4 pb-6">
     
-    <!-- Imagen de Personaje Superior (Con botón X) -->
-    <div class="relative w-full flex justify-center">
-      <img id="personajeFondo" src="20_soles-removebg-preview.png" alt="Personaje Histórico" class="w-full h-auto max-w-[280px] object-contain">
-      <!-- Botón X de cerrar para volver atrás -->
-      <button id="btnCerrarX" class="absolute top-2 right-6 text-white/80 hover:text-white bg-black/20 rounded-full p-1">
+    <!-- Contenedor del Personaje Superior (Ocupa de punta a punta con un pequeño espacio) -->
+    <div class="relative w-full flex justify-center items-center">
+      <!-- El billete ahora usa w-[94%] para expandirse perfectamente en el celular -->
+      <img id="personajeFondo" src="20_soles-removebg-preview.png" alt="Personaje Histórico" class="w-[94%] h-auto object-contain">
+      <!-- Botón X en la esquina del billete -->
+      <button id="btnCerrarX" class="absolute top-2 right-[5%] text-white/80 hover:text-white bg-black/20 rounded-full p-1 z-10">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
       </button>
     </div>
 
-    <!-- Tarjeta Principal Blanca -->
-    <div class="bg-white rounded-[28px] p-6 shadow-xl text-yapeInk relative overflow-hidden -mt-6">
+    <!-- Tarjeta Principal Blanca (Alineada al ancho del billete) -->
+    <div class="bg-white rounded-[28px] p-6 shadow-xl text-yapeInk w-[94%] relative overflow-hidden -mt-4">
       
       <!-- Encabezado ¡Yapeaste! y Compartir -->
       <div class="flex justify-between items-center mb-4">
@@ -86,7 +87,7 @@
         </button>
       </div>
 
-      <!-- Sección del Monto (S/ 30.00) -->
+      <!-- Sección del Monto (Corregido con formato de dos decimales) -->
       <div class="flex items-baseline mb-1">
         <span class="text-yapeInk text-3xl font-extrabold mr-1">S/</span>
         <span id="montoFinal" class="text-yapeInk text-5xl font-black tracking-tight">0.00</span>
@@ -103,7 +104,7 @@
         </span>
         <span class="flex items-center">
           <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-          <span id="horaTexto">05:40 p. m.</span>
+          <span id="horaTexto">06:01 p. m.</span>
         </span>
       </div>
 
@@ -114,9 +115,9 @@
           <span class="ml-1.5 bg-yapeAqua text-white rounded-full w-3.5 h-3.5 flex items-center justify-center text-[8px] font-black">i</span>
         </span>
         <div class="flex space-x-1">
-          <span id="cod1" class="bg-gray-100 text-yapeInk font-bold text-xs px-2.5 py-1 rounded-md">8</span>
-          <span id="cod2" class="bg-gray-100 text-yapeInk font-bold text-xs px-2.5 py-1 rounded-md">7</span>
-          <span id="cod3" class="bg-gray-100 text-yapeInk font-bold text-xs px-2.5 py-1 rounded-md">7</span>
+          <span id="cod1" class="bg-gray-100 text-yapeInk font-bold text-xs px-2.5 py-1 rounded-md">1</span>
+          <span id="cod2" class="bg-gray-100 text-yapeInk font-bold text-xs px-2.5 py-1 rounded-md">6</span>
+          <span id="cod3" class="bg-gray-100 text-yapeInk font-bold text-xs px-2.5 py-1 rounded-md">1</span>
         </div>
       </div>
 
@@ -134,31 +135,31 @@
         </div>
         <div class="flex justify-between text-xs font-semibold">
           <span class="text-gray-400">Nro. de operación</span>
-          <span id="numOperacion" class="text-yapeInk font-bold">92909877</span>
+          <span id="numOperacion" class="text-yapeInk font-bold">43600540</span>
         </div>
       </div>
 
     </div>
 
-    <!-- Botones de Acción -->
-    <button id="btnNuevoYapeo" class="w-full bg-[#00D4AF] hover:bg-[#00bda0] text-yapeInk font-extrabold py-3.5 px-4 rounded-2xl flex items-center justify-center space-x-2 text-sm shadow-md transition duration-200">
+    <!-- Botones de Acción adaptados al mismo ancho -->
+    <button id="btnNuevoYapeo" class="w-[94%] bg-[#00D4AF] hover:bg-[#00bda0] text-yapeInk font-extrabold py-3.5 px-4 rounded-2xl flex items-center justify-center space-x-2 text-sm shadow-md transition duration-200">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
       <span>Nuevo Yapeo</span>
     </button>
 
-    <button id="btnAyuda" class="w-full bg-white/10 hover:bg-white/20 text-white font-semibold py-3 px-4 rounded-2xl flex items-center justify-center space-x-2 text-xs">
+    <button id="btnAyuda" class="w-[94%] bg-white/10 hover:bg-white/20 text-white font-semibold py-3 px-4 rounded-2xl flex items-center justify-center space-x-2 text-xs">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
       <span>Necesito ayuda</span>
     </button>
 
-    <!-- SECCIÓN PUBLICITARIA FLOTANTE (CORREGIDA AL 100%) -->
-    <div class="rounded-3xl overflow-hidden p-5 bg-[#4A1153] shadow-md mt-4">
+    <!-- SECCIÓN PUBLICITARIA FLOTANTE (URL DE IMAGEN CORREGIDA AL 100%) -->
+    <div class="rounded-3xl overflow-hidden p-5 bg-[#4A1153] shadow-md mt-4 w-[94%]">
       <div class="text-xs font-bold text-white mb-3 flex justify-between items-center">
         <span>Más en Yape</span>
         <span class="text-black bg-yellow-400 px-1.5 py-0.5 text-[9px] rounded uppercase font-black">Nuevo</span>
       </div>
       <div class="rounded-2xl overflow-hidden">
-        <!-- Cargando tu imagen correcta de manera directa y segura -->
+        <!-- Imagen que cargará perfectamente la publicidad -->
         <img src="https://i.postimg.cc/W3DvJwTz/6.webp" alt="Publicidad Yape" class="w-full h-auto object-cover">
       </div>
     </div>
@@ -188,15 +189,15 @@
           const txtNumOperacion = document.getElementById("numOperacion");
           const imgPersonaje = document.getElementById("personajeFondo");
 
-          // Códigos de seguridad dinámicos
+          // Códigos de seguridad
           const txtCod1 = document.getElementById("cod1");
           const txtCod2 = document.getElementById("cod2");
           const txtCod3 = document.getElementById("cod3");
 
-          // 1. Mostrar Monto formateado estrictamente con decimales (.00)
+          // 1. Mostrar Monto formateado con exactamente dos decimales (.00)
           txtMontoFinal.textContent = inputMonto.toFixed(2);
 
-          // 2. Lógica Dinámica de Personajes Históricos según el Monto
+          // 2. Lógica Dinámica de Personajes según el Monto ingresado
           if (inputMonto >= 0.1 && inputMonto <= 19.99) {
             imgPersonaje.src = "10_soles-removebg-preview.png"; // José Quiñones
           } else if (inputMonto >= 20.00 && inputMonto <= 49.99) {
@@ -215,9 +216,9 @@
           txtNombreDestinatario.textContent = inputNombre.trim() !== "" ? inputNombre : "Daniel Dav*";
           txtCelularDestinatario.textContent = inputCelular.trim() !== "" ? inputCelular : "008";
 
-          // 4. Generar Fecha y Hora Actual de manera automatizada
+          // 4. Generar Fecha y Hora Actual
           const ahora = new Date();
-          const meses = ["jul.", "ago.", "set.", "oct.", "nov.", "dic.", "ene.", "feb.", "mar.", "abr.", "may.", "jun."];
+          const meses = ["ene.", "feb.", "mar.", "abr.", "may.", "jun.", "jul.", "ago.", "set.", "oct.", "nov.", "dic."];
           const dia = ahora.getDate();
           const mes = meses[ahora.getMonth()];
           const anio = ahora.getFullYear();
@@ -226,7 +227,7 @@
           const minutos = String(ahora.getMinutes()).padStart(2, '0');
           const ampm = horas >= 12 ? 'p. m.' : 'a. m.';
           horas = horas % 12;
-          horas = horas ? horas : 12; // El valor 0 se convierte a 12
+          horas = horas ? horas : 12;
           const horasFormateadas = String(horas).padStart(2, '0');
 
           txtFechaTexto.textContent = `${dia} ${mes} ${anio}`;
@@ -241,13 +242,13 @@
           txtCod2.textContent = Math.floor(Math.random() * 10);
           txtCod3.textContent = Math.floor(Math.random() * 10);
 
-          // 7. Mostrar Recibo y ocultar Formulario
+          // 7. Cambiar Pantallas
           document.getElementById("seccionFormulario").classList.add("hidden");
           document.getElementById("seccionRecibo").classList.remove("hidden");
         });
       }
 
-      // Función para regresar al formulario inicial
+      // Volver a iniciar el proceso
       const regresarAlFormulario = () => {
         document.getElementById("inputMonto").value = "";
         document.getElementById("inputNombre").value = "";
