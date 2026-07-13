@@ -3,16 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Yapear - Confirmación</title>
-  <link rel="stylesheet" href="./Yapear - Demo_files/primeicons.css">
-  <link rel="stylesheet" href="./Yapear - Demo_files/styles.css">
+  <title>Yape - Panel de Configuración</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    // CONTROL DE ACCESO
-    if (sessionStorage.getItem("admin_session") !== "active") {
-      window.location.href = "login.html";
-    }
-
     tailwind.config = {
       theme: {
         extend: {
@@ -22,139 +15,103 @@
             yapeBtn: "#8C3D99",
             yapeMint: "#10cbb4",
             yapeInk: "#3D3556"
-          },
-          keyframes: {
-            shimmer: {
-              '0%': { transform: 'translateX(-150%)' },
-              '50%': { transform: 'translateX(150%)' },
-              '100%': { transform: 'translateX(150%)' }
-            }
-          },
-          animation: {
-            shimmer: 'shimmer 3.5s infinite'
           }
         }
       }
     }
   </script>
 </head>
-<body onclick="volverAlEditor()" class="min-h-screen flex flex-col items-center justify-start bg-[#5C1C6A] p-4 font-sans relative cursor-pointer">
+<body class="min-h-screen flex flex-col items-center justify-center bg-[#5C1C6A] p-4 font-sans">
 
-  <!-- VISTA DEL RECIBO DIGITAL -->
-  <div class="w-full max-w-sm bg-transparent rounded-2xl overflow-hidden mt-4" onclick="event.stopPropagation();">
-    <div class="px-4 py-3">
-      
-      <!-- SECCIÓN SUPERIOR: FOTO DINÁMICA DEL PERSONAJE HISTÓRICO -->
-      <div class="relative w-full rounded-2xl overflow-hidden mb-4 shadow-md">
-        <img id="bannerHistorial" src="" alt="Personaje Histórico" class="w-full h-auto object-contain transition-all duration-300">
-        <!-- Brillo dinámico -->
-        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-shimmer pointer-events-none"></div>
-      </div>
-
-      <!-- Tarjeta del Recibo -->
-      <div class="bg-white rounded-2xl shadow-md p-5">
-        <div class="flex justify-between items-center">
-          <h1 class="text-[#863C95] font-bold text-[20px]">¡Yapeaste!</h1>
-          <span onclick="volverAlEditor()" class="text-yapeMint font-semibold flex items-center text-[14px] cursor-pointer">
-            <i class="pi pi-share-alt mr-2"></i> COMPARTIR
-          </span>
-        </div>
-
-        <div class="mt-4">
-          <div class="flex items-baseline">
-            <p class="text-yapeInk text-3xl font-bold mr-1">S/</p>
-            <p id="montoFinal" class="text-yapeInk text-5xl font-bold tracking-tight">0.00</p>
-          </div>
-
-          <p id="nombreDestino" class="text-yapeInk text-xl font-bold my-2">CARGANDO...</p>
-
-          <div class="flex items-center gap-1 text-gray-500 font-semibold text-[13px] mt-1">
-            <i class="pi pi-calendar"></i>
-            <span id="fechaActual">-- ---. ----</span>
-            <span class="mx-1">|</span>
-            <i class="pi pi-clock"></i>
-            <span id="horaActual">--:-- --. --.</span>
-          </div>
-          <hr class="border-gray-200 my-3">
-        </div>
-
-        <!-- Datos de Transacción -->
-        <div class="space-y-2 text-[14px] pb-2">
-          <div class="flex justify-between">
-            <p class="text-[#3e364e]">Nro. de celular</p>
-            <p class="text-[#3e364e] font-bold" id="numeroDestino">*** *** ***</p>
-          </div>
-          <div class="flex justify-between">
-            <p class="text-[#3e364e]">Destino</p>
-            <p class="text-[#3e364e] font-bold">Yape</p>
-          </div>
-          <div class="flex justify-between">
-            <p class="text-[#3e364e]">Nro. de operación</p>
-            <p class="text-[#3e364e] font-bold" id="numeroOperacion">00000000</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- SECCIÓN INFERIOR: PUBLICIDAD ESTÁTICA -->
-      <div class="mt-4 rounded-2xl overflow-hidden p-4 bg-[#4A1153] shadow-md">
-        <div class="text-sm font-semibold text-white mb-3 flex justify-between items-center">
-          <span>Más en Yape</span>
-          <span class="text-black rounded-md px-2 text-[11px] bg-[#f5c035] py-0.5 font-bold">Nuevo</span>
-        </div>
-        <div class="rounded-xl overflow-hidden">
-          <img src="./Yapear - Demo_files/banner_publicitario.png" alt="Publicidad Yape" class="w-full h-auto object-cover" onerror="this.src='https://i.postimg.cc/W3DvJwTz/6.webp'">
-        </div>
-      </div>
-
+  <!-- Contenedor Principal -->
+  <div class="w-full max-w-sm bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col justify-between min-h-[550px]">
+    
+    <!-- Encabezado morado de Yape -->
+    <div class="bg-yape text-white px-5 py-6 text-center relative">
+      <h1 class="font-bold text-xl tracking-wide">Yapear a un contacto</h1>
+      <p class="text-xs text-purple-200 mt-1">Configura los datos del recibo</p>
+      <button onclick="limpiarCampos()" class="absolute top-2 right-2 text-[10px] bg-red-600 hover:bg-red-700 text-white font-bold px-2 py-1 rounded">
+        Resetear
+      </button>
     </div>
+
+    <!-- Formulario Editable -->
+    <div class="px-6 py-4 flex-grow space-y-4">
+      <div>
+        <label class="block text-xs font-bold text-yapeInk mb-1 uppercase tracking-wider">Nombre del Destinatario</label>
+        <input id="loginNombre" type="text" placeholder="Ej. JUAN DE DIOS" class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-yape/30 transition">
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-yapeInk mb-1 uppercase tracking-wider">Número de Celular</label>
+        <input id="loginNumero" type="text" placeholder="Ej. 987 654 321" class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-yape/30 transition">
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-yapeInk mb-1 uppercase tracking-wider">Monto (S/)</label>
+        <input id="loginMonto" type="number" step="0.01" placeholder="200.00" class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-yape/30 transition">
+      </div>
+    </div>
+
+    <!-- Botón de acción inferior -->
+    <div class="p-6 bg-gray-50 border-t border-gray-100">
+      <button onclick="generarYapeo()" class="w-full bg-yape hover:bg-yapeDark text-white py-4 rounded-xl font-bold text-base transition-all duration-200 shadow-md transform active:scale-95">
+        Yapear 🚀
+      </button>
+    </div>
+
   </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      cargarDatos();
+      // Precarga si ya existen datos previos
+      if(localStorage.getItem("yape_nombre")) {
+        document.getElementById("loginNombre").value = localStorage.getItem("yape_nombre");
+        document.getElementById("loginNumero").value = localStorage.getItem("yape_numero");
+        document.getElementById("loginMonto").value = localStorage.getItem("yape_monto");
+      }
     });
 
-    function cargarDatos() {
-      const monto = parseFloat(localStorage.getItem("yape_monto") || "200.00");
-      const nombre = localStorage.getItem("yape_nombre") || "JUAN DE DIOS";
-      const numero = localStorage.getItem("yape_numero") || "*** *** 025";
-      
-      // Lectura de los nuevos valores automáticos generados al "Yapear"
-      const operacion = localStorage.getItem("yape_operacion") || "25764402";
-      const fecha = localStorage.getItem("yape_fecha") || "13 jul. 2026";
-      const hora = localStorage.getItem("yape_hora") || "04:30 p. m.";
-
-      // Renderizar valores en el recibo
-      document.getElementById("montoFinal").textContent = monto.toFixed(2);
-      document.getElementById("nombreDestino").textContent = nombre.toUpperCase();
-      document.getElementById("numeroDestino").textContent = numero;
-      document.getElementById("numeroOperacion").textContent = operacion;
-      document.getElementById("fechaActual").textContent = fecha;
-      document.getElementById("horaActual").textContent = hora;
-
-      asignarBannerPersonaje(monto);
+    function limpiarCampos() {
+      localStorage.clear();
+      document.getElementById("loginNombre").value = "";
+      document.getElementById("loginNumero").value = "";
+      document.getElementById("loginMonto").value = "";
+      alert("Configuración reseteada.");
     }
 
-    function asignarBannerPersonaje(monto) {
-      const imgElement = document.getElementById("bannerHistorial");
+    function generarYapeo() {
+      const nombre = document.getElementById("loginNombre").value.trim() || "JUAN DE DIOS";
+      const numero = document.getElementById("loginNumero").value.trim() || "*** *** 025";
+      const monto = document.getElementById("loginMonto").value.trim() || "200.00";
       
-      if (monto >= 0.1 && monto <= 19.99) {
-        imgElement.src = "./10_soles-removebg-preview.png";
-      } else if (monto >= 20.00 && monto <= 49.99) {
-        imgElement.src = "./20_soles-removebg-preview.png";
-      } else if (monto >= 50.00 && monto <= 99.99) {
-        imgElement.src = "./50_soles-removebg-preview.png";
-      } else if (monto >= 100.00 && monto <= 199.99) {
-        imgElement.src = "./100_soles-removebg-preview.png";
-      } else if (monto >= 200.00 && monto <= 1000.00) {
-        imgElement.src = "./200_soles-removebg-preview.png";
-      } else {
-        imgElement.src = "./200_soles-removebg-preview.png";
-      }
-    }
+      // Operación autogenerada de 8 dígitos
+      const operacionAuto = Math.floor(10000000 + Math.random() * 90000000).toString();
 
-    function volverAlEditor() {
-      window.location.href = "login.html"; 
+      // Capturar fecha y hora estática de este instante
+      const ahora = new Date();
+      const meses = ["ene.", "feb.", "mar.", "abr.", "may.", "jun.", "jul.", "ago.", "sep.", "oct.", "nov.", "dic."];
+      let horas = ahora.getHours();
+      const minutos = String(ahora.getMinutes()).padStart(2, '0');
+      const ampm = horas >= 12 ? 'p. m.' : 'a. m.';
+      horas = horas % 12 || 12;
+
+      const fechaFinal = `${ahora.getDate()} ${meses[ahora.getMonth()]} ${ahora.getFullYear()}`;
+      const horaFinal = `${String(horas).padStart(2, '0')}:${minutos} ${ampm}`;
+
+      // Guardado persistente
+      localStorage.setItem("yape_nombre", nombre);
+      localStorage.setItem("yape_numero", numero);
+      localStorage.setItem("yape_monto", parseFloat(monto).toFixed(2));
+      localStorage.setItem("yape_operacion", operacionAuto);
+      localStorage.setItem("yape_fecha", fechaFinal);
+      localStorage.setItem("yape_hora", horaFinal);
+
+      // Activamos la sesión
+      sessionStorage.setItem("admin_session", "active");
+
+      // Redirige al recibo
+      window.location.href = "recibo.html"; 
     }
   </script>
 </body>
