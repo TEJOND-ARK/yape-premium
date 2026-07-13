@@ -13,21 +13,18 @@
           colors: {
             yapeInk: '#2e0b3c',
             yapePurple: '#5C1C6A',
-            yapeAqua: '#25D366', // Ajustado al verde yape
-            yapeGray: '#f4f4f4',
-            yapeLightPurple: '#7B2CBF'
+            yapeAqua: '#25D366',
+            yapeGray: '#f4f4f4'
           }
         }
       }
     }
   </script>
   <style>
-    /* Tipografía e interfaz móvil fluida */
     body {
       background-color: #5C1C6A;
       -webkit-tap-highlight-color: transparent;
     }
-    /* Ocultar barra de scroll */
     ::-webkit-scrollbar {
       display: none;
     }
@@ -65,7 +62,7 @@
     </div>
   </div>
 
-  <!-- 2. VISTA DEL RECIBO COMPLETO (Formato Móvil Real 1:1) -->
+  <!-- 2. VISTA DEL RECIBO COMPLETO (Formato Móvil Real) -->
   <div id="seccionRecibo" class="hidden w-full max-w-md min-h-screen bg-yapePurple flex flex-col justify-between text-white relative">
     
     <!-- Barra superior con la X de cerrar -->
@@ -78,7 +75,7 @@
       <span class="text-sm font-medium tracking-wide">Compartir constancia</span>
     </div>
 
-    <!-- Cuerpo del Recibo (Fondo blanco redondeado como la app oficial) -->
+    <!-- Cuerpo del Recibo -->
     <div class="bg-white rounded-t-[32px] flex-1 flex flex-col justify-between p-6 text-center text-yapeInk shadow-2xl mt-2">
       
       <div>
@@ -96,7 +93,7 @@
 
         <!-- SECCIÓN DE MONTO CON EL PERSONAJE HISTÓRICO DE FONDO -->
         <div class="relative flex justify-center items-center my-4 h-36">
-          <!-- Personaje de Fondo Dinámico (Tamaño corregido) -->
+          <!-- Personaje de Fondo Dinámico -->
           <img id="personajeFondo" src="10_soles-removebg-preview.png" alt="Personaje" class="absolute max-h-36 w-auto object-contain opacity-40 pointer-events-none select-none z-0">
           
           <!-- El Monto -->
@@ -129,22 +126,15 @@
         </div>
       </div>
 
-      <!-- SECCIÓN PUBLICITARIA (BANNERS DE ABAJO CORREGIDOS) -->
+      <!-- SECCIÓN PUBLICITARIA (CON TU IMAGEN PREFERIDA) -->
       <div class="mt-6 mb-4">
-        <div class="rounded-2xl p-4 text-left flex justify-between items-center shadow-sm" style="background-color: #5C1C6A;">
-          <div>
-            <div class="flex items-center space-x-2 mb-1">
-              <span class="text-xs font-bold text-white tracking-wide">Más en Yape</span>
-              <span class="text-[9px] font-black text-black bg-yellow-400 px-1.5 py-0.5 rounded uppercase">Nuevo</span>
-            </div>
-            <p class="text-white text-xs font-semibold leading-snug">¡Pide tu Crédito Yape al instante! Rápido, seguro y desde donde estés.</p>
+        <div class="rounded-2xl p-3 text-left shadow-sm" style="background-color: #5C1C6A;">
+          <div class="flex items-center justify-between mb-2 px-1">
+            <span class="text-xs font-bold text-white tracking-wide">Más en Yape</span>
+            <span class="text-[9px] font-black text-black bg-yellow-400 px-1.5 py-0.5 rounded uppercase">Nuevo</span>
           </div>
-          <div class="ml-2 flex-shrink-0">
-            <!-- Icono decorativo de celular/crédito -->
-            <svg class="w-10 h-10 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-          </div>
+          <!-- Tu imagen favorita cargando a tamaño completo de manera óptima -->
+          <img src="https://i.postimg.cc/W3DvJwTz/6.webp" alt="Promoción de Yape" class="w-full h-auto rounded-xl object-cover">
         </div>
       </div>
 
@@ -156,12 +146,11 @@
     </div>
   </div>
 
-  <!-- LÓGICA DE CONTROL TOTAL (100% LOCAL) -->
+  <!-- LÓGICA DE CONTROL LOCAL -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       
       const btnYapear = document.getElementById("btnYapear");
-      const btnVolver = document.getElementById("btnVolver");
       const btnCerrar = document.getElementById("btnCerrar");
       const btnIrInicio = document.getElementById("btnIrInicio");
 
@@ -183,7 +172,7 @@
           // 1. Mostrar Monto formateado
           txtMontoFinal.textContent = inputMonto.toFixed(2);
 
-          // 2. Lógica Dinámica de Personajes según el Monto Real
+          // 2. Lógica Dinámica de Personajes según el Monto Real (Usa tus archivos de imagen locales)
           if (inputMonto >= 0.1 && inputMonto <= 19.99) {
             imgPersonaje.src = "10_soles-removebg-preview.png"; // José Quiñones
           } else if (inputMonto >= 20.00 && inputMonto <= 49.99) {
@@ -219,18 +208,18 @@
           // 6. Transición de pantallas (Oculta formulario, abre Recibo)
           document.getElementById("seccionFormulario").classList.add("hidden");
           document.getElementById("seccionRecibo").classList.remove("hidden");
-          document.body.style.backgroundColor = "#5C1C6A"; // El fondo cambia al morado Yape
+          document.body.style.backgroundColor = "#5C1C6A"; 
         });
       }
 
-      // Función para resetear y regresar al menú anterior (al presionar X o "Ir a inicio")
+      // Función para resetear y regresar al formulario
       const regresarAlFormulario = () => {
         document.getElementById("inputMonto").value = "";
         document.getElementById("inputNombre").value = "";
         document.getElementById("inputCelular").value = "";
         document.getElementById("seccionRecibo").classList.add("hidden");
         document.getElementById("seccionFormulario").classList.remove("hidden");
-        document.body.style.backgroundColor = "#f3f4f6"; // Vuelve al gris del formulario
+        document.body.style.backgroundColor = "#5C1C6A"; // Mantiene el morado de fondo
       };
 
       if (btnCerrar) btnCerrar.addEventListener("click", regresarAlFormulario);
