@@ -126,15 +126,17 @@
         </div>
       </div>
 
-      <!-- SECCIÓN PUBLICITARIA (CON TU IMAGEN PREFERIDA) -->
+      <!-- SECCIÓN PUBLICITARIA (URL COMPLETA .WEBP CORREGIDA) -->
       <div class="mt-6 mb-4">
-        <div class="rounded-2xl p-3 text-left shadow-sm" style="background-color: #5C1C6A;">
-          <div class="flex items-center justify-between mb-2 px-1">
-            <span class="text-xs font-bold text-white tracking-wide">Más en Yape</span>
-            <span class="text-[9px] font-black text-black bg-yellow-400 px-1.5 py-0.5 rounded uppercase">Nuevo</span>
+        <div class="rounded-3xl overflow-hidden p-5 bg-[#4A1153] shadow-md">
+          <div class="text-sm font-semibold text-white mb-3.5 flex justify-between items-center">
+            <span>Más en Yape</span>
+            <span class="text-black bg-yellow-400 px-1.5 py-0.5 text-[10px] rounded uppercase font-black">Nuevo</span>
           </div>
-          <!-- Tu imagen favorita cargando a tamaño completo de manera óptima -->
-          <img src="https://i.postimg.cc/W3DvJwTz/6.webp" alt="Promoción de Yape" class="w-full h-auto rounded-xl object-cover">
+          <div class="rounded-2xl overflow-hidden">
+            <!-- Cargando tu imagen favorita de manera segura -->
+            <img src="https://i.postimg.cc/W3DvJwTz/6.webp" alt="Publicidad Yape" class="w-full h-auto object-cover">
+          </div>
         </div>
       </div>
 
@@ -154,7 +156,6 @@
       const btnCerrar = document.getElementById("btnCerrar");
       const btnIrInicio = document.getElementById("btnIrInicio");
 
-      // Función para procesar y mostrar el recibo
       if (btnYapear) {
         btnYapear.addEventListener("click", () => {
           const inputMontoVal = document.getElementById("inputMonto").value;
@@ -169,10 +170,10 @@
           const txtNumOperacion = document.getElementById("numOperacion");
           const imgPersonaje = document.getElementById("personajeFondo");
 
-          // 1. Mostrar Monto formateado
+          // 1. Mostrar Monto formateado con decimales
           txtMontoFinal.textContent = inputMonto.toFixed(2);
 
-          // 2. Lógica Dinámica de Personajes según el Monto Real (Usa tus archivos de imagen locales)
+          // 2. Lógica Dinámica de Personajes Históricos según el Rango de Monto
           if (inputMonto >= 0.1 && inputMonto <= 19.99) {
             imgPersonaje.src = "10_soles-removebg-preview.png"; // José Quiñones
           } else if (inputMonto >= 20.00 && inputMonto <= 49.99) {
@@ -184,14 +185,14 @@
           } else if (inputMonto >= 200.00) {
             imgPersonaje.src = "200_soles-removebg-preview.png"; // Santa Rosa de Lima
           } else {
-            imgPersonaje.src = "10_soles-removebg-preview.png";
+            imgPersonaje.src = "10_soles-removebg-preview.png"; // Default
           }
 
           // 3. Pintar Datos del Destinatario
           txtNombreDestinatario.textContent = inputNombre.trim() !== "" ? inputNombre : "Destinatario";
           txtCelularDestinatario.textContent = inputCelular.trim() !== "" ? `• ${inputCelular}` : "• 955 100 282";
 
-          // 4. Generar Fecha y Hora Actual
+          // 4. Generar Fecha y Hora Actual automáticamente
           const ahora = new Date();
           const meses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Set", "Oct", "Nov", "Dic"];
           const dia = ahora.getDate();
@@ -201,25 +202,23 @@
           const minutos = String(ahora.getMinutes()).padStart(2, '0');
           txtFechaHora.textContent = `${dia} ${mes}. ${anio} - ${hora}:${minutos}`;
 
-          // 5. Generar un Número de Operación aleatorio realista de 8 dígitos
+          // 5. Generar Número de Operación de 8 dígitos al azar
           const numOpAzar = Math.floor(10000000 + Math.random() * 90000000);
           txtNumOperacion.textContent = numOpAzar;
 
-          // 6. Transición de pantallas (Oculta formulario, abre Recibo)
+          // 6. Cambiar Pantalla (Ocultar Formulario, Mostrar Recibo)
           document.getElementById("seccionFormulario").classList.add("hidden");
           document.getElementById("seccionRecibo").classList.remove("hidden");
-          document.body.style.backgroundColor = "#5C1C6A"; 
         });
       }
 
-      // Función para resetear y regresar al formulario
+      // Función para resetear los valores y volver al formulario
       const regresarAlFormulario = () => {
         document.getElementById("inputMonto").value = "";
         document.getElementById("inputNombre").value = "";
         document.getElementById("inputCelular").value = "";
         document.getElementById("seccionRecibo").classList.add("hidden");
         document.getElementById("seccionFormulario").classList.remove("hidden");
-        document.body.style.backgroundColor = "#5C1C6A"; // Mantiene el morado de fondo
       };
 
       if (btnCerrar) btnCerrar.addEventListener("click", regresarAlFormulario);
