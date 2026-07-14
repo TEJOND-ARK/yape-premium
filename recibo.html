@@ -17,10 +17,10 @@
       theme: {
         extend: {
           colors: {
-            yapeDeepPurple: '#2B133D', /* Morado noche */
+            yapeDeepPurple: '#1F082F', /* Morado noche ultra oscuro */
             yapeBackground: '#741880', /* Morado de fondo exacto */
             yapeMagenta: '#8E288F',    /* Fucsia del ¡Yapeaste! */
-            yapeTextGray: '#61546B',   /* Gris de etiquetas */
+            yapeTextGray: '#61546B',   /* Gris de etiquetas de la izquierda */
             yapeLightBg: '#F4EFF6',    /* Casillas de código de seguridad */
             yapeAqua: '#00D4AF',       /* Turquesa */
           }
@@ -53,7 +53,7 @@
 
       <div>
         <label class="block text-sm font-medium text-gray-600 mb-1">Número de Celular</label>
-        <input id="inputCelular" type="text" placeholder="Ej. 987654074" class="w-full px-4 py-2.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-yapeBackground text-yapeDeepPurple">
+        <input id="inputCell" type="text" placeholder="Ej. 987654074" class="w-full px-4 py-2.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-yapeBackground text-yapeDeepPurple">
       </div>
 
       <div>
@@ -67,7 +67,7 @@
     </div>
   </div>
 
-  <!-- 2. VISTA DEL RECIBO COMPLETO (Se corrigió a px-4 para dar el medio centímetro exacto a los costados) -->
+  <!-- 2. VISTA DEL RECIBO COMPLETO (Márgenes perfectos de 16px a los costados) -->
   <div id="seccionRecibo" class="hidden w-full max-w-[415px] flex flex-col items-center space-y-2.5 px-4 pt-1 pb-1">
     
     <!-- Contenedor del Personaje Superior -->
@@ -83,8 +83,8 @@
       
       <!-- Encabezado ¡Yapeaste! y Compartir -->
       <div class="flex justify-between items-center mb-2">
-        <h2 class="text-[21px] font-medium text-yapeMagenta tracking-tight">¡Yapeaste!</h2>
-        <button class="text-[#00D4AF] font-medium text-sm flex items-center space-x-1">
+        <h2 class="text-[21px] font-semibold text-yapeMagenta tracking-tight">¡Yapeaste!</h2>
+        <button class="text-[#00D4AF] font-semibold text-sm flex items-center space-x-1">
           <svg class="w-3.5 h-3.5 text-[#00D4AF]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="18" cy="5" r="3"></circle>
             <circle cx="6" cy="12" r="3"></circle>
@@ -96,17 +96,17 @@
         </button>
       </div>
 
-      <!-- Sección del Monto -->
+      <!-- Sección del Monto (Equilibrado para ser limpio y no tosco) -->
       <div class="flex items-baseline mb-1">
         <span class="text-yapeDeepPurple text-[28px] font-normal mr-1 select-none tracking-tight">S/</span>
-        <span id="montoFinal" class="text-yapeDeepPurple text-[52px] font-normal tracking-tight leading-none">0.10</span>
+        <span id="montoFinal" class="text-yapeDeepPurple text-[52px] font-medium tracking-tight leading-none">0.10</span>
       </div>
 
-      <!-- Nombre del Destinatario -->
-      <p id="nombreDestinatario" class="text-[19px] font-medium text-yapeDeepPurple mb-4 tracking-tight">Edward Ped*</p>
+      <!-- Nombre del Destinatario (Semi-bold) -->
+      <p id="nombreDestinatario" class="text-[19.5px] font-semibold text-yapeDeepPurple mb-4 tracking-tight">Edward Ped*</p>
 
       <!-- Fecha y Hora -->
-      <div class="flex items-center space-x-2 text-[12.5px] text-yapeTextGray font-normal mb-5 border-b border-gray-100 pb-3.5">
+      <div class="flex items-center space-x-2 text-[12.5px] text-[#61546B] font-normal mb-5 border-b border-gray-100 pb-3.5">
         <span class="flex items-center">
           <svg class="w-3.5 h-3.5 mr-1 text-yapeTextGray" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
           <span id="fechaTexto" class="font-normal">14 jul. 2026</span>
@@ -114,11 +114,11 @@
         <span class="text-yapeTextGray font-light">|</span>
         <span class="flex items-center">
           <svg class="w-3.5 h-3.5 mr-1 text-yapeTextGray" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-          <span id="horaTexto" class="font-normal">4:15 p. m.</span>
+          <span id="horaTexto" class="font-normal">4:15 p.m.</span>
         </span>
       </div>
 
-      <!-- Código de Seguridad -->
+      <!-- Código de Seguridad (Título corregido a Font-Medium) -->
       <div class="flex items-center justify-between border-b border-gray-100 pb-4 mb-5">
         <span class="text-[10.5px] font-medium text-[#7A6D85] tracking-wider uppercase flex items-center">
           CÓDIGO DE SEGURIDAD 
@@ -131,7 +131,7 @@
         </div>
       </div>
 
-      <!-- Datos de la transacción -->
+      <!-- Datos de la transacción (Grosores calibrados: izquierda normal, derecha normal) -->
       <div class="space-y-2">
         <p class="text-[10px] font-medium text-[#7A6D85] tracking-widest uppercase mb-1.5">Datos de la transacción</p>
         
@@ -170,9 +170,9 @@
 
     <!-- SECCIÓN PUBLICITARIA FLOTANTE -->
     <div class="rounded-t-3xl overflow-hidden p-4 bg-[#570B62] shadow-md w-full mt-1.5 z-10">
-      <div class="text-xs font-medium text-white mb-2 flex justify-between items-center">
+      <div class="text-xs font-semibold text-white mb-2 flex justify-between items-center">
         <span>Más en Yape</span>
-        <span class="text-black bg-yellow-400 px-1.5 py-0.5 text-[9px] rounded uppercase font-medium">Nuevo</span>
+        <span class="text-black bg-yellow-400 px-1.5 py-0.5 text-[9px] rounded uppercase font-bold">Nuevo</span>
       </div>
       <div class="rounded-xl overflow-hidden">
         <img src="https://i.postimg.cc/W3DvJwTz/6.webp" alt="Publicidad Yape" class="w-full h-auto object-cover">
@@ -239,14 +239,14 @@
         }
 
         const ahora = new Date();
-        const meses = ["ene.", "feb.", "mar.", "abr.", "may.", "jun.", "jul.", "ago.", "set.", "oct.", "nov.", "dic."];
+        const meses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "set", "oct", "nov", "dic"];
         const dia = ahora.getDate();
         const mes = meses[ahora.getMonth()];
         const anio = ahora.getFullYear();
         
         let horas = ahora.getHours();
         const minutos = String(ahora.getMinutes()).padStart(2, '0');
-        const ampm = horas >= 12 ? 'p. m.' : 'a. m.';
+        const ampm = horas >= 12 ? 'p.m.' : 'a.m.';
         horas = horas % 12;
         const textHora = horas ? horas : 12;
 
@@ -277,7 +277,7 @@
       if (btnYapear) {
         btnYapear.addEventListener("click", () => {
           const nom = document.getElementById("inputNombre").value;
-          const cel = document.getElementById("inputCelular").value;
+          const cel = document.getElementById("inputCell").value;
           const mon = document.getElementById("inputMonto").value;
           procesarYapeDirecto(nom, cel, mon);
         });
