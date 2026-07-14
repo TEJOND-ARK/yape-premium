@@ -10,7 +10,7 @@
   <meta name="theme-color" content="#7B2E83">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <link rel="apple-touch-icon" href="https://i.postimg.cc/W3DvJwTz/6.webp">
+  <link class="apple-touch-icon" href="https://i.postimg.cc/W3DvJwTz/6.webp">
 
   <!-- CDN de la librería lectora de QR oficial -->
   <script src="https://unpkg.com/html5-qrcode"></script>
@@ -104,64 +104,84 @@
   </div>
 
   <script>
-    // Variables de control para el Escáner QR
     let html5Qrcode = null;
 
-    // Lógica para procesar y aislar la etiqueta '59' (Nombre) del formato EMVCo de Yape
-    function extraerNombreYape(cadenaQr) {
-      let posicion = 0;
-      while (posicion < cadenaQr.length) {
-        if (posicion + 4 > cadenaQr.length) break;
-        
-        let campoId = cadenaQr.substring(posicion, posicion + 2);
-        let longitud = parseInt(cadenaQr.substring(posicion + 2, posicion + 4));
-        
-        if (isNaN(longitud)) break;
-        
-        let valor = cadenaQr.substring(posicion + 4, posicion + 4 + longitud);
-        
-        // El ID '59' corresponde al Nombre del titular
-        if (campoId === "59") {
-          return valor;
+    // Procesador robusto para la norma EMVCo (Yape estándar)
+    function decodificarEMVCoYape(cadenaQr) {
+      try {
+        let datos = { nombre: null, celular: null };
+        let index = 0;
+
+        // Comprobación básica del formato estándar EMVCo
+        if (!cadenaQr.startsWith("000201")) {
+          return null;
         }
-        
-        posicion += 4 + longitud;
+
+        while (index < cadenaQr.length) {
+          let tag = cadenaQr.substring(index, index + 2);
+          let longitud = parseInt(cadenaQr.substring(index + 2, index + 4));
+          
+          if (isNaN(longitud)) break;
+          
+          let valor = cadenaQr.substring(index + 4, index + 4 + longitud);
+
+          // Sub-parsing del ID '26' o '30' que contiene el celular en Yape
+          if (tag === "26" || tag === "30" || tag === "28") {
+            // Buscamos un número de celular de 9 dígitos en el valor plano
+            let telefonoCoincidencia = valor.match(/9\d{8}/);
+            if (telefonoCoincidencia) {
+              datos.celular = telefonoCoincidencia[0];
+            }
+          }
+          
+          // ID 59: Nombre del Comercio / Nombre del Titular
+          if (tag === "59") {
+            datos.nombre = valor.toUpperCase().trim();
+          }
+
+          index += 4 + longitud;
+        }
+
+        return datos;
+      } catch (e) {
+        console.error("Error procesando EMVCo", e);
+        return null;
       }
-      return null;
     }
 
-    // Funciones para manejar el ciclo de vida del modal y la cámara
     function abrirEscaner() {
       document.getElementById('modalEscaner').classList.remove('hidden');
-      
-      // Instanciar la cámara en el div 'lector'
       html5Qrcode = new Html5Qrcode("lector");
+      const config = { fps: 15, qrbox: { width: 220, height: 220 } };
       
-      const config = { fps: 10, qrbox: { width: 220, height: 220 } };
-      
-      // Iniciar cámara usando por defecto la trasera (environment)
       html5Qrcode.start(
         { facingMode: "environment" },
         config,
         (decodedText) => {
-          // Éxito: Procesamos el código leído
-          const nombreTitular = extraerNombreYape(decodedText);
+          // Extraemos los datos reales del QR
+          let datosYape = decodificarEMVCoYape(decodedText);
           
-          if (nombreTitular) {
-            document.getElementById('loginNombre').value = nombreTitular;
+          if (datosYape && datosYape.nombre) {
+            // Asignamos el nombre real leído
+            document.getElementById('loginNombre').value = datosYape.nombre;
+            
+            // Si también capturó el celular real, lo inyectamos
+            if (datosYape.celular) {
+              // Formateamos para simular la visualización de Yape (Ej: 987 654 321)
+              let num = datosYape.celular;
+              document.getElementById('loginNumero').value = `${num.substring(0,3)} ${num.substring(3,6)} ${num.substring(6,9)}`;
+            }
             cerrarEscaner();
           } else {
-            // Si lee un QR pero no es un EMVCo con nombre, podemos usar todo el texto
-            document.getElementById('loginNombre').value = decodedText.substring(0, 25);
+            // Si el código no cumple el formato EMVCo, asigna el texto plano directamente
+            document.getElementById('loginNombre').value = decodedText.substring(0, 25).toUpperCase();
             cerrarEscaner();
           }
         },
-        (errorMessage) => {
-          // Ignorar errores de escaneo continuos en consola
-        }
+        (errorMessage) => {}
       ).catch(err => {
         console.error("Error al iniciar la cámara: ", err);
-        alert("No se pudo acceder a la cámara. Asegúrate de dar los permisos correspondientes.");
+        alert("No se pudo acceder a la cámara.");
         cerrarEscaner();
       });
     }
@@ -199,17 +219,15 @@
       if (!deferredPrompt) return;
       deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
-      console.log(`User response to the install prompt: ${outcome}`);
       deferredPrompt = null;
       pwaContainer.classList.add('hidden');
     });
 
     window.addEventListener('appinstalled', () => {
-      console.log('¡La aplicación de Yape se instaló correctamente!');
       pwaContainer.classList.add('hidden');
     });
 
-    // Código original de carga y generación
+    // Carga de datos de configuración guardados
     document.addEventListener("DOMContentLoaded", () => {
       if(localStorage.getItem("yape_nombre")) {
         document.getElementById("loginNombre").value = localStorage.getItem("yape_nombre");
