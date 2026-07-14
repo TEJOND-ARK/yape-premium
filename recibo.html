@@ -66,7 +66,7 @@
   </div>
 
   <!-- 2. VISTA DEL RECIBO COMPLETO -->
-  <div id="seccionRecibo" class="hidden w-full max-w-[420px] flex flex-col items-center space-y-3 px-3 pt-1 pb-1">
+  <div id="seccionRecibo" class="hidden w-full max-w-[420px] flex flex-col items-center space-y-2 px-3 pt-1 pb-1">
     
     <!-- Contenedor del Personaje Superior -->
     <div class="relative w-full flex justify-center items-center">
@@ -77,11 +77,11 @@
       </button>
     </div>
 
-    <!-- Tarjeta Principal Blanca -->
-    <div class="bg-white rounded-[24px] p-5 shadow-xl text-yapeInk w-[98%] relative overflow-hidden -mt-6 z-10">
+    <!-- Tarjeta Principal Blanca (Compactada verticalmente con py-4) -->
+    <div class="bg-white rounded-[24px] px-5 py-4 shadow-xl text-yapeInk w-[98%] relative overflow-hidden -mt-6 z-10">
       
       <!-- Encabezado ¡Yapeaste! y Compartir -->
-      <div class="flex justify-between items-center mb-2">
+      <div class="flex justify-between items-center mb-1">
         <h2 class="text-[22px] font-black text-yapeMagenta tracking-tight">¡Yapeaste!</h2>
         <button class="text-[#00D4AF] font-extrabold text-sm flex items-center space-x-1">
           <svg class="w-3.5 h-3.5 text-[#00D4AF]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -96,16 +96,16 @@
       </div>
 
       <!-- Sección del Monto -->
-      <div class="flex items-baseline mb-1">
+      <div class="flex items-baseline mb-0.5">
         <span class="text-yapeInk text-[28px] font-bold mr-1 select-none tracking-tight">S/</span>
         <span id="montoFinal" class="text-yapeInk text-[52px] font-bold tracking-tighter leading-none">20</span>
       </div>
 
       <!-- Nombre del Destinatario -->
-      <p id="nombreDestinatario" class="text-[19px] font-extrabold text-yapeInk mb-3 tracking-tight">Melanie Hua*</p>
+      <p id="nombreDestinatario" class="text-[19px] font-extrabold text-yapeInk mb-2 tracking-tight">Melanie Hua*</p>
 
       <!-- Fecha y Hora -->
-      <div class="flex items-center space-x-2 text-[12px] text-yapeGray font-semibold mb-3 border-b border-gray-100 pb-3">
+      <div class="flex items-center space-x-2 text-[12px] text-yapeGray font-semibold mb-2.5 border-b border-gray-100 pb-2.5">
         <span class="flex items-center">
           <svg class="w-3.5 h-3.5 mr-1 text-yapeGray" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
           <span id="fechaTexto">13 jul. 2026</span>
@@ -117,8 +117,8 @@
         </span>
       </div>
 
-      <!-- Código de Seguridad (Corregido y agrandado como en la captura original) -->
-      <div class="flex items-center justify-between border-b border-gray-100 pb-3 mb-3">
+      <!-- Código de Seguridad (Agrandados y espaciados exactamente como la captura original) -->
+      <div class="flex items-center justify-between border-b border-gray-100 pb-2.5 mb-2.5">
         <span class="text-[10px] font-extrabold text-yapeGray tracking-wider uppercase flex items-center">
           CÓDIGO DE SEGURIDAD 
           <span class="ml-1 bg-[#00D4AF] text-white rounded-full w-3.5 h-3.5 flex items-center justify-center text-[8px] font-black">i</span>
@@ -131,8 +131,8 @@
       </div>
 
       <!-- Datos de la transacción -->
-      <div class="space-y-2">
-        <p class="text-[10.5px] font-extrabold text-[#71657A] tracking-wider uppercase mb-1">Datos de la transacción</p>
+      <div class="space-y-1.5">
+        <p class="text-[10.5px] font-extrabold text-[#71657A] tracking-wider uppercase mb-0.5">Datos de la transacción</p>
         
         <div class="flex justify-between text-[13.5px]">
           <span class="text-[#2B1A3B] font-semibold">Nro. de celular</span>
@@ -151,15 +151,15 @@
     </div>
 
     <!-- Botón de Acción con el Avión de Papel apuntando hacia arriba-derecha -->
-    <button id="btnNuevoYapeo" class="w-[98%] bg-[#00D4AF] hover:bg-[#00bda0] text-white font-extrabold py-3.5 px-4 rounded-xl flex items-center justify-center space-x-2 text-[14.5px] shadow-sm transition duration-200 mt-1 z-10">
+    <button id="btnNuevoYapeo" class="w-[98%] bg-[#00D4AF] hover:bg-[#00bda0] text-white font-extrabold py-3 px-4 rounded-xl flex items-center justify-center space-x-2 text-[14.5px] shadow-sm transition duration-200 mt-1 z-10">
       <svg class="w-4 h-4 transform -rotate-45 translate-x-0.5 translate-y-0.5 text-white" viewBox="0 0 24 24" fill="currentColor">
         <path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/>
       </svg>
       <span>Nuevo Yapeo</span>
     </button>
 
-    <!-- Botón de Necesito Ayuda -->
-    <button id="btnAyuda" class="w-[98%] text-white font-bold py-2 px-4 rounded-xl flex items-center justify-center space-x-2 text-[14px] hover:bg-white/5 z-10">
+    <!-- Botón de Necesito Ayuda (Compactado para ahorrar espacio) -->
+    <button id="btnAyuda" class="w-[98%] text-white font-bold py-1.5 px-4 rounded-xl flex items-center justify-center space-x-2 text-[14px] hover:bg-white/5 z-10">
       <svg class="w-4.5 h-4.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
         <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
@@ -167,8 +167,8 @@
       <span>Necesito ayuda</span>
     </button>
 
-    <!-- SECCIÓN PUBLICITARIA FLOTANTE -->
-    <div class="rounded-t-3xl overflow-hidden p-4 bg-[#590463] shadow-md w-[98%] mt-1 z-10">
+    <!-- SECCIÓN PUBLICITARIA FLOTANTE (Ahora asoma de nuevo de forma impecable) -->
+    <div class="rounded-t-3xl overflow-hidden p-4 bg-[#590463] shadow-md w-[98%] mt-0.5 z-10">
       <div class="text-xs font-bold text-white mb-2 flex justify-between items-center">
         <span>Más en Yape</span>
         <span class="text-black bg-yellow-400 px-1.5 py-0.5 text-[9px] rounded uppercase font-black">Nuevo</span>
