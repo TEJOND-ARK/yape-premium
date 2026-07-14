@@ -8,8 +8,11 @@
   <!-- Vinculación del Manifiesto PWA -->
   <link rel="manifest" href="./manifest.json">
   <meta name="theme-color" content="#7B2E83">
+  
+  <!-- Configuración nativa para iOS (Safari) -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Yape">
   <link class="apple-touch-icon" href="https://i.postimg.cc/W3DvJwTz/6.webp">
 
   <!-- CDN de la librería lectora de QR oficial -->
@@ -102,7 +105,7 @@
       </div>
     </div>
 
-    <!-- Botón flotante/interior de Instalar App (Oculto por defecto) -->
+    <!-- Botón de Instalar App (Se mostrará automáticamente si el dispositivo es compatible) -->
     <div id="pwaContainer" class="px-6 pb-2 hidden">
       <button id="btnInstalar" class="w-full bg-yapeMint hover:bg-[#0eb39e] text-yapeInk py-2.5 rounded-xl font-bold text-xs uppercase tracking-wide transition flex items-center justify-center gap-2">
         📥 Descargar App Yape
@@ -316,12 +319,59 @@
       }
     }
 
-    // Registro del Service Worker
+    // ====================================================
+    // REGISTRO DE SERVICE WORKER & COMPORTAMIENTO INSTALABLE
+    // ====================================================
+    let eventoInstalacion = null;
+
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').catch(err => console.error(err));
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log("Service Worker corriendo perfectamente."))
+          .catch(err => console.error("Error registrando SW: ", err));
       });
     }
+
+    // Escucha el evento del sistema que detecta que se puede instalar
+    window.addEventListener('beforeinstallprompt', (e) => {
+      // Previene que el navegador muestre su pop-up predeterminado de inmediato
+      e.preventDefault();
+      // Guardamos el evento para dispararlo cuando presionen tu botón de instalar
+      eventoInstalacion = e;
+      
+      // Hacemos visible el contenedor de tu botón personalizado
+      const pwaContainer = document.getElementById('pwaContainer');
+      if (pwaContainer) {
+        pwaContainer.classList.remove('hidden');
+      }
+    });
+
+    // Acción de instalación al presionar tu botón "Descargar App Yape"
+    const btnInstalar = document.getElementById('btnInstalar');
+    if (btnInstalar) {
+      btnInstalar.addEventListener('click', async () => {
+        if (!eventoInstalacion) {
+          alert("¡La app ya está instalada o tu navegador no soporta instalaciones automáticas! Si estás en iPhone, usa la opción 'Compartir -> Añadir a pantalla de inicio'.");
+          return;
+        }
+        // Mostramos el aviso nativo de instalación
+        eventoInstalacion.prompt();
+        // Esperamos la elección del usuario
+        const { outcome } = await eventoInstalacion.userChoice;
+        console.log(`Elección de instalación del usuario: ${outcome}`);
+        // Limpiamos la variable
+        eventoInstalacion = null;
+        // Volvemos a ocultar el contenedor
+        document.getElementById('pwaContainer').classList.add('hidden');
+      });
+    }
+
+    // Ocultar botón si la app ya fue instalada exitosamente
+    window.addEventListener('appinstalled', () => {
+      console.log('¡Aplicación instalada exitosamente en el sistema!');
+      document.getElementById('pwaContainer').classList.add('hidden');
+      eventoInstalacion = null;
+    });
 
     // Carga de datos locales
     document.addEventListener("DOMContentLoaded", () => {
