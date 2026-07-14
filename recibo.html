@@ -71,8 +71,8 @@
     </div>
   </div>
 
-  <!-- 2. VISTA DEL RECIBO COMPLETO -->
-  <div id="seccionRecibo" class="hidden w-full max-w-[420px] flex flex-col items-center space-y-2 px-3 pt-1 pb-1">
+  <!-- 2. VISTA DEL RECIBO COMPLETO (Se amplió el ancho máximo global) -->
+  <div id="seccionRecibo" class="hidden w-full max-w-[450px] flex flex-col items-center space-y-2 px-3 pt-1 pb-1">
     
     <!-- Contenedor del Personaje Superior -->
     <div class="relative w-full flex justify-center items-center">
@@ -83,8 +83,8 @@
       </button>
     </div>
 
-    <!-- Tarjeta Principal Blanca -->
-    <div class="bg-white rounded-[24px] px-5 py-5 shadow-xl text-yapeDeepPurple w-[98%] relative overflow-hidden -mt-6 z-10">
+    <!-- Tarjeta Principal Blanca (Cambiado a w-[95%] para que se vea más grande en pantalla) -->
+    <div class="bg-white rounded-[24px] px-5 py-5 shadow-xl text-yapeDeepPurple w-[95%] relative overflow-hidden -mt-6 z-10">
       
       <!-- Encabezado ¡Yapeaste! y Compartir -->
       <div class="flex justify-between items-center mb-1.5">
@@ -107,7 +107,7 @@
         <span id="montoFinal" class="text-yapeDeepPurple text-[52px] font-normal tracking-tight leading-none">0.10</span>
       </div>
 
-      <!-- Nombre del Destinatario (Morado Noche, Grosor exacto de la app) -->
+      <!-- Nombre del Destinatario (Morado Noche) -->
       <p id="nombreDestinatario" class="text-[19px] font-medium text-yapeDeepPurple mb-2 tracking-tight">Edward Ped*</p>
 
       <!-- Fecha y Hora (Gris suave con matiz morado) -->
@@ -123,7 +123,7 @@
         </span>
       </div>
 
-      <!-- Código de Seguridad (Corregido con font-bold para que resalten idénticos a la foto) -->
+      <!-- Código de Seguridad (Números en morado oscuro y gruesos) -->
       <div class="flex items-center justify-between border-b border-gray-100 pb-3 mb-3">
         <span class="text-[10.5px] font-medium text-[#7A6D85] tracking-wider uppercase flex items-center">
           CÓDIGO DE SEGURIDAD 
@@ -136,7 +136,7 @@
         </div>
       </div>
 
-      <!-- Datos de la transacción (Tono y alineaciones clavados de la foto) -->
+      <!-- Datos de la transacción -->
       <div class="space-y-1.5">
         <p class="text-[10px] font-medium text-[#7A6D85] tracking-widest uppercase mb-1">Datos de la transacción</p>
         
@@ -156,8 +156,8 @@
 
     </div>
 
-    <!-- Botón de Acción -->
-    <button id="btnNuevoYapeo" class="w-[98%] bg-[#00D4AF] hover:bg-[#00bda0] text-white font-medium py-3.5 px-4 rounded-xl flex items-center justify-center space-x-2 text-[14.5px] shadow-sm transition duration-200 mt-1.5 z-10">
+    <!-- Botón de Acción (Consistente con el nuevo ancho) -->
+    <button id="btnNuevoYapeo" class="w-[95%] bg-[#00D4AF] hover:bg-[#00bda0] text-white font-medium py-3.5 px-4 rounded-xl flex items-center justify-center space-x-2 text-[14.5px] shadow-sm transition duration-200 mt-1.5 z-10">
       <svg width="18" height="18" class="transform -rotate-45 text-white flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
         <path d="M2 21l21-9L2 3v7l15 2-15 2z"/>
       </svg>
@@ -165,7 +165,7 @@
     </button>
 
     <!-- Botón de Necesito Ayuda -->
-    <button id="btnAyuda" class="w-[98%] text-white font-medium py-2 px-4 rounded-xl flex items-center justify-center space-x-2 text-[14px] hover:bg-white/5 z-10">
+    <button id="btnAyuda" class="w-[95%] text-white font-medium py-2 px-4 rounded-xl flex items-center justify-center space-x-2 text-[14px] hover:bg-white/5 z-10">
       <svg width="20" height="20" class="flex-shrink-0 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
         <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
@@ -174,7 +174,7 @@
     </button>
 
     <!-- SECCIÓN PUBLICITARIA FLOTANTE -->
-    <div class="rounded-t-3xl overflow-hidden p-4 bg-[#570B62] shadow-md w-[98%] mt-1.5 z-10">
+    <div class="rounded-t-3xl overflow-hidden p-4 bg-[#570B62] shadow-md w-[95%] mt-1.5 z-10">
       <div class="text-xs font-medium text-white mb-2 flex justify-between items-center">
         <span>Más en Yape</span>
         <span class="text-black bg-yellow-400 px-1.5 py-0.5 text-[9px] rounded uppercase font-medium">Nuevo</span>
@@ -194,7 +194,6 @@
       const btnNuevoYapeo = document.getElementById("btnNuevoYapeo");
       const btnCerrarX = document.getElementById("btnCerrarX");
 
-      // FUNCIÓN CORE: Renderiza el recibo con los valores exactos
       function procesarYapeDirecto(nombreVal, celularVal, montoVal) {
         const inputMonto = parseFloat(montoVal) || 0.10;
         const inputNombre = nombreVal || "Edward Ped*";
@@ -212,14 +211,12 @@
         const txtCod2 = document.getElementById("cod2");
         const txtCod3 = document.getElementById("cod3");
 
-        // 1. Formatear Monto con 2 decimales para montos pequeños
         if (inputMonto % 1 === 0) {
           txtMontoFinal.textContent = inputMonto.toString();
         } else {
           txtMontoFinal.textContent = inputMonto.toFixed(2);
         }
 
-        // 2. Cambio Dinámico de Personajes
         if (inputMonto >= 0.1 && inputMonto <= 19.99) {
           imgPersonaje.src = "10_soles-removebg-preview.png";
         } else if (inputMonto >= 20.00 && inputMonto <= 49.99) {
@@ -234,10 +231,8 @@
           imgPersonaje.src = "10_soles-removebg-preview.png";
         }
 
-        // 3. Pintar Datos del Destinatario
         txtNombreDestinatario.textContent = inputNombre.trim() !== "" ? inputNombre : "Edward Ped*";
 
-        // Formatear Celular
         const celularLimpio = inputCell.replace(/\D/g, ''); 
         if (celularLimpio.length >= 3) {
           const ultimosTres = celularLimpio.substring(celularLimpio.length - 3);
@@ -248,7 +243,6 @@
           txtCelularDestinatario.textContent = "*** *** 452";
         }
 
-        // 4. Fecha y Hora Exacta
         const ahora = new Date();
         const meses = ["ene.", "feb.", "mar.", "abr.", "may.", "jun.", "jul.", "ago.", "set.", "oct.", "nov.", "dic."];
         const dia = ahora.getDate();
@@ -258,40 +252,33 @@
         let horas = ahora.getHours();
         const minutos = String(ahora.getMinutes()).padStart(2, '0');
         const ampm = horas >= 12 ? 'p. m.' : 'a. m.';
-        horas = horas % 12;
+        horas = bandwidth = horas % 12;
         const textHora = horas ? horas : 12;
 
         txtFechaTexto.textContent = `${dia} ${mes}. ${anio}`;
         txtHoraTexto.textContent = `${textHora}:${minutos} ${ampm}`;
 
-        // 5. Número de Operación aleatorio de 8 dígitos
         const numOpAzar = String(Math.floor(10000000 + Math.random() * 90000000)).padStart(8, '0');
         txtNumOperacion.textContent = "20" + numOpAzar.substring(2);
 
-        // 6. Generar Código de Seguridad
         txtCod1.textContent = Math.floor(Math.random() * 10);
         txtCod2.textContent = Math.floor(Math.random() * 10);
         txtCod3.textContent = Math.floor(Math.random() * 10);
 
-        // 7. Mostrar Recibo, Ocultar Formulario
         document.getElementById("seccionFormulario").classList.add("hidden");
         document.getElementById("seccionRecibo").classList.remove("hidden");
       }
 
-      // FLUJO AUTOMÁTICO QR: Leer del LocalStorage al cargar inmediatamente
       const localNombre = localStorage.getItem("yape_nombre");
       const localNumero = localStorage.getItem("yape_numero");
       const localMonto = localStorage.getItem("yape_monto");
 
       if (localNombre && localMonto) {
-        // Redirige al recibo instantáneamente con los datos leídos
         procesarYapeDirecto(localNombre, localNumero, localMonto);
       } else {
-        // Si no hay datos previos del QR, mostramos el formulario
         document.getElementById("seccionFormulario").classList.remove("hidden");
       }
 
-      // Procesar vía clic en el formulario manual por si acaso
       if (btnYapear) {
         btnYapear.addEventListener("click", () => {
           const nom = document.getElementById("inputNombre").value;
@@ -301,7 +288,6 @@
         });
       }
 
-      // Regresar limpio al menú/index
       const regresarAlFormulario = () => {
         localStorage.removeItem("yape_nombre");
         localStorage.removeItem("yape_numero");
