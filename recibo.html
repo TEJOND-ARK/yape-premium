@@ -66,19 +66,19 @@
   </div>
 
   <!-- 2. VISTA DEL RECIBO COMPLETO -->
-  <div id="seccionRecibo" class="hidden w-full max-w-[420px] flex flex-col items-center space-y-3 px-3 pt-2 pb-1">
+  <div id="seccionRecibo" class="hidden w-full max-w-[420px] flex flex-col items-center space-y-3 px-3 pt-1 pb-1">
     
-    <!-- Contenedor del Personaje Superior (De borde a borde de la tarjeta) -->
+    <!-- Contenedor del Personaje Superior (Alargado al 100% de la pantalla para simular el billete real) -->
     <div class="relative w-full flex justify-center items-center">
-      <img id="personajeFondo" src="20_soles-removebg-preview.png" alt="Personaje Histórico" class="w-[98%] h-auto object-contain">
-      <!-- Botón X original con fondo morado circular transparente -->
-      <button id="btnCerrarX" class="absolute top-1.5 right-[4%] text-white/90 hover:text-white bg-white/10 rounded-full p-2 z-10">
+      <img id="personajeFondo" src="20_soles-removebg-preview.png" alt="Personaje Histórico" class="w-full h-auto object-cover scale-105">
+      <!-- Botón X original alineado de forma precisa a la esquina superior derecha -->
+      <button id="btnCerrarX" class="absolute top-3 right-4 text-white/90 hover:text-white bg-white/10 rounded-full p-2 z-10">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
       </button>
     </div>
 
-    <!-- Tarjeta Principal Blanca (Más compacta verticalmente) -->
-    <div class="bg-white rounded-[24px] p-5 shadow-xl text-yapeInk w-[98%] relative overflow-hidden -mt-3.5">
+    <!-- Tarjeta Principal Blanca (Ajustada más arriba para encajar de manera continua con el billete) -->
+    <div class="bg-white rounded-[24px] p-5 shadow-xl text-yapeInk w-[98%] relative overflow-hidden -mt-6 z-10">
       
       <!-- Encabezado ¡Yapeaste! y Compartir -->
       <div class="flex justify-between items-center mb-2">
@@ -95,7 +95,7 @@
         </button>
       </div>
 
-      <!-- Sección del Monto (Tamaño perfecto y sin exceso de margen inferior) -->
+      <!-- Sección del Monto -->
       <div class="flex items-baseline mb-1">
         <span class="text-yapeInk text-[28px] font-bold mr-1 select-none tracking-tight">S/</span>
         <span id="montoFinal" class="text-yapeInk text-[52px] font-bold tracking-tighter leading-none">20</span>
@@ -151,7 +151,7 @@
     </div>
 
     <!-- Botón de Acción -->
-    <button id="btnNuevoYapeo" class="w-[98%] bg-[#00D4AF] hover:bg-[#00bda0] text-white font-extrabold py-3 px-4 rounded-xl flex items-center justify-center space-x-2 text-[14.5px] shadow-sm transition duration-200 mt-1">
+    <button id="btnNuevoYapeo" class="w-[98%] bg-[#00D4AF] hover:bg-[#00bda0] text-white font-extrabold py-3.5 px-4 rounded-xl flex items-center justify-center space-x-2 text-[14.5px] shadow-sm transition duration-200 mt-1 z-10">
       <svg class="w-3.5 h-3.5 transform rotate-45 -translate-y-0.5 text-white" viewBox="0 0 24 24" fill="currentColor">
         <path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/>
       </svg>
@@ -159,7 +159,7 @@
     </button>
 
     <!-- Botón de Necesito Ayuda -->
-    <button id="btnAyuda" class="w-[98%] text-white font-bold py-2 px-4 rounded-xl flex items-center justify-center space-x-2 text-[14px] hover:bg-white/5">
+    <button id="btnAyuda" class="w-[98%] text-white font-bold py-2 px-4 rounded-xl flex items-center justify-center space-x-2 text-[14px] hover:bg-white/5 z-10">
       <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
         <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
@@ -167,8 +167,8 @@
       <span>Necesito ayuda</span>
     </button>
 
-    <!-- SECCIÓN PUBLICITARIA FLOTANTE (Ahora asoma perfectamente en la parte inferior) -->
-    <div class="rounded-t-3xl overflow-hidden p-4 bg-[#590463] shadow-md w-[98%] mt-1">
+    <!-- SECCIÓN PUBLICITARIA FLOTANTE -->
+    <div class="rounded-t-3xl overflow-hidden p-4 bg-[#590463] shadow-md w-[98%] mt-1 z-10">
       <div class="text-xs font-bold text-white mb-2 flex justify-between items-center">
         <span>Más en Yape</span>
         <span class="text-black bg-yellow-400 px-1.5 py-0.5 text-[9px] rounded uppercase font-black">Nuevo</span>
