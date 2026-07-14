@@ -35,8 +35,8 @@
 </head>
 <body class="flex flex-col items-center min-h-screen bg-[#740B83] overflow-x-hidden">
 
-  <!-- 1. FORMULARIO DE INGRESO (Se oculta al yapear) -->
-  <div id="seccionFormulario" class="bg-white rounded-3xl shadow-xl w-[92%] max-w-sm p-6 border border-gray-100 my-auto z-20">
+  <!-- 1. FORMULARIO DE INGRESO (Se mantiene oculto por defecto ahora) -->
+  <div id="seccionFormulario" class="hidden bg-white rounded-3xl shadow-xl w-[92%] max-w-sm p-6 border border-gray-100 my-auto z-20">
     <h2 class="text-xl font-bold text-yapeInk mb-4 text-center">Generar Yape</h2>
     
     <div class="space-y-4">
@@ -58,14 +58,14 @@
         <input id="inputMonto" type="number" step="0.1" placeholder="Ej. 20" class="w-full px-4 py-2.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-yapePurple text-yapeInk">
       </div>
 
-      <!-- Botón para procesar -->
+      <!-- Botón para procesar manualmente si se desea -->
       <button id="btnYapear" class="w-full bg-[#740B83] hover:bg-opacity-90 text-white font-bold py-3 px-4 rounded-xl transition duration-200 shadow-md">
         Yapear
       </button>
     </div>
   </div>
 
-  <!-- 2. VISTA DEL RECIBO COMPLETO -->
+  <!-- 2. VISTA DEL RECIBO COMPLETO (Se muestra directamente al cargar si hay datos) -->
   <div id="seccionRecibo" class="hidden w-full max-w-[420px] flex flex-col items-center space-y-2 px-3 pt-1 pb-1">
     
     <!-- Contenedor del Personaje Superior -->
@@ -188,99 +188,121 @@
       const btnNuevoYapeo = document.getElementById("btnNuevoYapeo");
       const btnCerrarX = document.getElementById("btnCerrarX");
 
+      // FUNCIÓN CLAVE: Procesa y muestra los datos directamente
+      function procesarYapeDirecto(nombreVal, celularVal, montoVal) {
+        const inputMonto = parseFloat(montoVal) || 20;
+        const inputNombre = nombreVal || "Melanie Hua*";
+        const inputCell = celularVal || "987654074";
+
+        const txtMontoFinal = document.getElementById("montoFinal");
+        const txtNombreDestinatario = document.getElementById("nombreDestinatario");
+        const txtCelularDestinatario = document.getElementById("celularDestinatario");
+        const txtFechaTexto = document.getElementById("fechaTexto");
+        const txtHoraTexto = document.getElementById("horaTexto");
+        const txtNumOperacion = document.getElementById("numOperacion");
+        const imgPersonaje = document.getElementById("personajeFondo");
+
+        const txtCod1 = document.getElementById("cod1");
+        const txtCod2 = document.getElementById("cod2");
+        const txtCod3 = document.getElementById("cod3");
+
+        // 1. Mostrar Monto sin decimales si es entero
+        if (inputMonto % 1 === 0) {
+          txtMontoFinal.textContent = inputMonto.toString();
+        } else {
+          txtMontoFinal.textContent = inputMonto.toFixed(2);
+        }
+
+        // 2. Lógica Dinámica de Personajes según el Monto
+        if (inputMonto >= 0.1 && inputMonto <= 19.99) {
+          imgPersonaje.src = "10_soles-removebg-preview.png";
+        } else if (inputMonto >= 20.00 && inputMonto <= 49.99) {
+          imgPersonaje.src = "20_soles-removebg-preview.png";
+        } else if (inputMonto >= 50.00 && inputMonto <= 99.99) {
+          imgPersonaje.src = "50_soles-removebg-preview.png";
+        } else if (inputMonto >= 100.00 && inputMonto <= 199.99) {
+          imgPersonaje.src = "100_soles-removebg-preview.png";
+        } else if (inputMonto >= 200.00) {
+          imgPersonaje.src = "200_soles-removebg-preview.png";
+        } else {
+          imgPersonaje.src = "10_soles-removebg-preview.png";
+        }
+
+        // 3. Pintar Datos del Destinatario
+        txtNombreDestinatario.textContent = inputNombre.trim() !== "" ? inputNombre : "Melanie Hua*";
+
+        // Formateador dinámico para el celular (pasa "987654074" a "*** *** 074")
+        const celularLimpio = inputCell.replace(/\D/g, ''); // Solo números
+        if (celularLimpio.length >= 3) {
+          const ultimosTres = celularLimpio.substring(celularLimpio.length - 3);
+          txtCelularDestinatario.textContent = `*** *** ${ultimosTres}`;
+        } else if (inputCell.trim() !== "") {
+          txtCelularDestinatario.textContent = inputCell;
+        } else {
+          txtCelularDestinatario.textContent = "*** *** 074";
+        }
+
+        // 4. Generar Fecha y Hora Actual
+        const ahora = new Date();
+        const meses = ["ene.", "feb.", "mar.", "abr.", "may.", "jun.", "jul.", "ago.", "set.", "oct.", "nov.", "dic."];
+        const dia = ahora.getDate();
+        const mes = meses[ahora.getMonth()];
+        const anio = ahora.getFullYear();
+        
+        let horas = ahora.getHours();
+        const minutos = String(ahora.getMinutes()).padStart(2, '0');
+        const ampm = horas >= 12 ? 'p. m.' : 'a. m.';
+        horas = horas % 12;
+        textHora = horas ? horas : 12;
+        const horasFormateadas = String(textHora).padStart(2, '0');
+
+        txtFechaTexto.textContent = `${dia} ${mes} ${anio}`;
+        txtHoraTexto.textContent = `${horasFormateadas}:${minutos} ${ampm}`;
+
+        // 5. Generar Número de Operación de 8 dígitos
+        const numOpAzar = String(Math.floor(10000000 + Math.random() * 90000000)).padStart(8, '0');
+        txtNumOperacion.textContent = "0" + numOpAzar;
+
+        // 6. Códigos de seguridad aleatorios
+        txtCod1.textContent = Math.floor(Math.random() * 10);
+        txtCod2.textContent = Math.floor(Math.random() * 10);
+        txtCod3.textContent = Math.floor(Math.random() * 10);
+
+        // 7. Mostrar Pantalla de Recibo
+        document.getElementById("seccionFormulario").classList.add("hidden");
+        document.getElementById("seccionRecibo").classList.remove("hidden");
+      }
+
+      // NUEVO: Auto-ejecución leyendo del LocalStorage
+      const localNombre = localStorage.getItem("yape_nombre");
+      const localNumero = localStorage.getItem("yape_numero");
+      const localMonto = localStorage.getItem("yape_monto");
+
+      if (localNombre && localMonto) {
+        // Si hay datos listos de la primera pantalla, renderizamos el recibo directamente
+        procesarYapeDirecto(localNombre, localNumero, localMonto);
+      } else {
+        // Si no hay datos (entraste de la nada), mostramos el formulario manual
+        document.getElementById("seccionFormulario").classList.remove("hidden");
+      }
+
+      // Procesador manual alternativo (por si se usa el formulario interno)
       if (btnYapear) {
         btnYapear.addEventListener("click", () => {
-          const inputMontoVal = document.getElementById("inputMonto").value;
-          const inputMonto = parseFloat(inputMontoVal) || 20;
           const inputNombre = document.getElementById("inputNombre").value;
-          const inputCell = document.getElementById("inputCelular").value;
-
-          const txtMontoFinal = document.getElementById("montoFinal");
-          const txtNombreDestinatario = document.getElementById("nombreDestinatario");
-          const txtCelularDestinatario = document.getElementById("celularDestinatario");
-          const txtFechaTexto = document.getElementById("fechaTexto");
-          const txtHoraTexto = document.getElementById("horaTexto");
-          const txtNumOperacion = document.getElementById("numOperacion");
-          const imgPersonaje = document.getElementById("personajeFondo");
-
-          const txtCod1 = document.getElementById("cod1");
-          const txtCod2 = document.getElementById("cod2");
-          const txtCod3 = document.getElementById("cod3");
-
-          // 1. Mostrar Monto sin decimales si es entero
-          if (inputMonto % 1 === 0) {
-            txtMontoFinal.textContent = inputMonto.toString();
-          } else {
-            txtMontoFinal.textContent = inputMonto.toFixed(2);
-          }
-
-          // 2. Lógica Dinámica de Personajes según el Monto
-          if (inputMonto >= 0.1 && inputMonto <= 19.99) {
-            imgPersonaje.src = "10_soles-removebg-preview.png";
-          } else if (inputMonto >= 20.00 && inputMonto <= 49.99) {
-            imgPersonaje.src = "20_soles-removebg-preview.png";
-          } else if (inputMonto >= 50.00 && inputMonto <= 99.99) {
-            imgPersonaje.src = "50_soles-removebg-preview.png";
-          } else if (inputMonto >= 100.00 && inputMonto <= 199.99) {
-            imgPersonaje.src = "100_soles-removebg-preview.png";
-          } else if (inputMonto >= 200.00) {
-            imgPersonaje.src = "200_soles-removebg-preview.png";
-          } else {
-            imgPersonaje.src = "10_soles-removebg-preview.png";
-          }
-
-          // 3. Pintar Datos del Destinatario
-          txtNombreDestinatario.textContent = inputNombre.trim() !== "" ? inputNombre : "Melanie Hua*";
-
-          // Formateador dinámico para el celular (pasa "987654074" a "*** *** 074")
-          const celularLimpio = inputCell.replace(/\D/g, ''); // Solo números
-          if (celularLimpio.length >= 3) {
-            const ultimosTres = celularLimpio.substring(celularLimpio.length - 3);
-            txtCelularDestinatario.textContent = `*** *** ${ultimosTres}`;
-          } else if (inputCell.trim() !== "") {
-            txtCelularDestinatario.textContent = inputCell;
-          } else {
-            txtCelularDestinatario.textContent = "*** *** 074";
-          }
-
-          // 4. Generar Fecha y Hora Actual
-          const ahora = new Date();
-          const meses = ["ene.", "feb.", "mar.", "abr.", "may.", "jun.", "jul.", "ago.", "set.", "oct.", "nov.", "dic."];
-          const dia = ahora.getDate();
-          const mes = meses[ahora.getMonth()];
-          const anio = ahora.getFullYear();
-          
-          let horas = ahora.getHours();
-          const minutos = String(ahora.getMinutes()).padStart(2, '0');
-          const ampm = horas >= 12 ? 'p. m.' : 'a. m.';
-          horas = horas % 12;
-          textHora = horas ? horas : 12;
-          const horasFormateadas = String(textHora).padStart(2, '0');
-
-          txtFechaTexto.textContent = `${dia} ${mes} ${anio}`;
-          txtHoraTexto.textContent = `${horasFormateadas}:${minutos} ${ampm}`;
-
-          // 5. Generar Número de Operación de 8 dígitos
-          const numOpAzar = String(Math.floor(10000000 + Math.random() * 90000000)).padStart(8, '0');
-          txtNumOperacion.textContent = "0" + numOpAzar;
-
-          // 6. Códigos de seguridad aleatorios
-          txtCod1.textContent = Math.floor(Math.random() * 10);
-          txtCod2.textContent = Math.floor(Math.random() * 10);
-          txtCod3.textContent = Math.floor(Math.random() * 10);
-
-          // 7. Cambiar Pantallas
-          document.getElementById("seccionFormulario").classList.add("hidden");
-          document.getElementById("seccionRecibo").classList.remove("hidden");
+          const inputCelular = document.getElementById("inputCelular").value;
+          const inputMontoVal = document.getElementById("inputMonto").value;
+          procesarYapeDirecto(inputNombre, inputCelular, inputMontoVal);
         });
       }
 
       const regresarAlFormulario = () => {
-        document.getElementById("inputMonto").value = "";
-        document.getElementById("inputNombre").value = "";
-        document.getElementById("inputCelular").value = "";
-        document.getElementById("seccionRecibo").classList.add("hidden");
-        document.getElementById("seccionFormulario").classList.remove("hidden");
+        // Limpiamos los datos guardados para que la próxima vez pida configurarse de cero
+        localStorage.removeItem("yape_nombre");
+        localStorage.removeItem("yape_numero");
+        localStorage.removeItem("yape_monto");
+        
+        window.location.href = "index.html"; // Regresa al menú morado de configuración
       };
 
       if (btnNuevoYapeo) btnNuevoYapeo.addEventListener("click", regresarAlFormulario);
