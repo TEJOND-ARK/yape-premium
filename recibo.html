@@ -13,7 +13,7 @@
         extend: {
           colors: {
             yapeInk: '#2B1A3B',       /* Color ciruela muy oscuro */
-            yapePurple: '#740B83',    /* ¡CORREGIDO AL ORIGINAL! Morado eléctrico oficial de Yape */
+            yapePurple: '#740B83',    /* Morado eléctrico oficial de Yape */
             yapeMagenta: '#8F1D95',   /* Fucsia de ¡Yapeaste! */
             yapeGray: '#71657A',      /* Gris suave */
             yapeAqua: '#00D4AF',      /* Turquesa del botón */
@@ -24,7 +24,7 @@
   </script>
   <style>
     body {
-      background-color: #740B83;      /* ¡CORREGIDO AL ORIGINAL! Morado eléctrico exacto de fondo */
+      background-color: #740B83;      /* Morado eléctrico exacto de fondo */
       -webkit-tap-highlight-color: transparent;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
@@ -82,7 +82,8 @@
       
       <!-- Encabezado ¡Yapeaste! y Compartir -->
       <div class="flex justify-between items-center mb-1">
-        <h2 class="text-[22px] font-black text-yapeMagenta tracking-tight">¡Yapeaste!</h2>
+        <!-- MODIFICADO: font-semibold en lugar de font-black para que el '¡Yapeaste!' sea más fino -->
+        <h2 class="text-[22px] font-semibold text-yapeMagenta tracking-tight">¡Yapeaste!</h2>
         <button class="text-[#00D4AF] font-extrabold text-sm flex items-center space-x-1">
           <svg class="w-3.5 h-3.5 text-[#00D4AF]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="18" cy="5" r="3"></circle>
