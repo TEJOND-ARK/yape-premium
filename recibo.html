@@ -67,7 +67,7 @@
     </div>
   </div>
 
-  <!-- 2. VISTA DEL RECIBO COMPLETO (Márgenes perfectos de 16px a los costados) -->
+  <!-- 2. VISTA DEL RECIBO COMPLETO -->
   <div id="seccionRecibo" class="hidden w-full max-w-[415px] flex flex-col items-center space-y-2.5 px-4 pt-1 pb-1">
     
     <!-- Contenedor del Personaje Superior -->
@@ -96,13 +96,13 @@
         </button>
       </div>
 
-      <!-- Sección del Monto (Equilibrado para ser limpio y no tosco) -->
+      <!-- Sección del Monto -->
       <div class="flex items-baseline mb-1">
         <span class="text-yapeDeepPurple text-[28px] font-normal mr-1 select-none tracking-tight">S/</span>
         <span id="montoFinal" class="text-yapeDeepPurple text-[52px] font-medium tracking-tight leading-none">0.10</span>
       </div>
 
-      <!-- Nombre del Destinatario (Semi-bold) -->
+      <!-- Nombre del Destinatario -->
       <p id="nombreDestinatario" class="text-[19.5px] font-semibold text-yapeDeepPurple mb-4 tracking-tight">Edward Ped*</p>
 
       <!-- Fecha y Hora -->
@@ -118,9 +118,9 @@
         </span>
       </div>
 
-      <!-- Código de Seguridad (Título corregido a Font-Medium) -->
+      <!-- Código de Seguridad (Título corregido a Font-Semibold) -->
       <div class="flex items-center justify-between border-b border-gray-100 pb-4 mb-5">
-        <span class="text-[10.5px] font-medium text-[#7A6D85] tracking-wider uppercase flex items-center">
+        <span class="text-[10.5px] font-semibold text-[#7A6D85] tracking-wider uppercase flex items-center">
           CÓDIGO DE SEGURIDAD 
           <span class="ml-1 bg-[#00D4AF] text-white rounded-full w-3.5 h-3.5 flex items-center justify-center text-[8px] font-semibold">i</span>
         </span>
@@ -131,21 +131,21 @@
         </div>
       </div>
 
-      <!-- Datos de la transacción (Grosores calibrados: izquierda normal, derecha normal) -->
+      <!-- Datos de la transacción (Título y valores ajustados a grosores medios/semis ideales) -->
       <div class="space-y-2">
-        <p class="text-[10px] font-medium text-[#7A6D85] tracking-widest uppercase mb-1.5">Datos de la transacción</p>
+        <p class="text-[10px] font-semibold text-[#7A6D85] tracking-widest uppercase mb-1.5">Datos de la transacción</p>
         
         <div class="flex justify-between text-[13.5px]">
-          <span class="text-yapeTextGray font-normal">Nro. de celular</span>
-          <span id="celularDestinatario" class="text-yapeDeepPurple font-normal">*** *** 452</span>
+          <span class="text-yapeTextGray font-medium">Nro. de celular</span>
+          <span id="celularDestinatario" class="text-yapeDeepPurple font-medium">*** *** 452</span>
         </div>
         <div class="flex justify-between text-[13.5px]">
-          <span class="text-yapeTextGray font-normal">Destino</span>
-          <span class="text-yapeDeepPurple font-normal">Yape</span>
+          <span class="text-yapeTextGray font-medium">Destino</span>
+          <span class="text-yapeDeepPurple font-medium">Yape</span>
         </div>
         <div class="flex justify-between text-[13.5px]">
-          <span class="text-yapeTextGray font-normal">Nro. de operación</span>
-          <span id="numOperacion" class="text-yapeDeepPurple font-normal">20961883</span>
+          <span class="text-yapeTextGray font-medium">Nro. de operación</span>
+          <span id="numOperacion" class="text-yapeDeepPurple font-medium">20961883</span>
         </div>
       </div>
 
