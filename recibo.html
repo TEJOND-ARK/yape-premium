@@ -13,7 +13,7 @@
         extend: {
           colors: {
             yapeInk: '#2B1A3B',       /* Color ciruela muy oscuro */
-            yapePurple: '#740B84',    /* El morado más claro y vivo real de Yape */
+            yapePurple: '#742384',    /* ¡CORREGIDO! Morado más claro, vivo y vibrante real de Yape */
             yapeMagenta: '#8F1D95',   /* Fucsia de ¡Yapeaste! */
             yapeGray: '#71657A',      /* Gris suave */
             yapeAqua: '#00D4AF',      /* Turquesa del botón */
@@ -24,7 +24,7 @@
   </script>
   <style>
     body {
-      background-color: #740B84;
+      background-color: #742384;      /* ¡CORREGIDO! Morado más claro y vibrante de fondo */
       -webkit-tap-highlight-color: transparent;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
@@ -33,7 +33,7 @@
     }
   </style>
 </head>
-<body class="flex flex-col items-center min-h-screen bg-[#740B84] overflow-x-hidden">
+<body class="flex flex-col items-center min-h-screen bg-[#742384] overflow-x-hidden">
 
   <!-- 1. FORMULARIO DE INGRESO (Se oculta al yapear) -->
   <div id="seccionFormulario" class="bg-white rounded-3xl shadow-xl w-[92%] max-w-sm p-6 border border-gray-100 my-auto z-20">
@@ -59,7 +59,7 @@
       </div>
 
       <!-- Botón para procesar -->
-      <button id="btnYapear" class="w-full bg-[#740B84] hover:bg-opacity-90 text-white font-bold py-3 px-4 rounded-xl transition duration-200 shadow-md">
+      <button id="btnYapear" class="w-full bg-[#742384] hover:bg-opacity-90 text-white font-bold py-3 px-4 rounded-xl transition duration-200 shadow-md">
         Yapear
       </button>
     </div>
@@ -101,7 +101,7 @@
         <span id="montoFinal" class="text-yapeInk text-[52px] font-bold tracking-tighter leading-none">20</span>
       </div>
 
-      <!-- Nombre del Destinatario - CORREGIDO: Se ajustó a font-semibold para que no se vea tan grueso, manteniendo el color oscuro original -->
+      <!-- Nombre del Destinatario -->
       <p id="nombreDestinatario" class="text-[19px] font-semibold text-yapeInk mb-2 tracking-tight">Melanie Hua*</p>
 
       <!-- Fecha y Hora -->
