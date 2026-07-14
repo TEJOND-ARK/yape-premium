@@ -68,16 +68,16 @@
   <!-- 2. VISTA DEL RECIBO COMPLETO -->
   <div id="seccionRecibo" class="hidden w-full max-w-[420px] flex flex-col items-center space-y-3 px-3 pt-1 pb-1">
     
-    <!-- Contenedor del Personaje Superior (Alargado al 100% de la pantalla para simular el billete real) -->
+    <!-- Contenedor del Personaje Superior -->
     <div class="relative w-full flex justify-center items-center">
       <img id="personajeFondo" src="20_soles-removebg-preview.png" alt="Personaje Histórico" class="w-full h-auto object-cover scale-105">
-      <!-- Botón X original alineado de forma precisa a la esquina superior derecha -->
+      <!-- Botón X original -->
       <button id="btnCerrarX" class="absolute top-3 right-4 text-white/90 hover:text-white bg-white/10 rounded-full p-2 z-10">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
       </button>
     </div>
 
-    <!-- Tarjeta Principal Blanca (Ajustada más arriba para encajar de manera continua con el billete) -->
+    <!-- Tarjeta Principal Blanca -->
     <div class="bg-white rounded-[24px] p-5 shadow-xl text-yapeInk w-[98%] relative overflow-hidden -mt-6 z-10">
       
       <!-- Encabezado ¡Yapeaste! y Compartir -->
@@ -117,16 +117,16 @@
         </span>
       </div>
 
-      <!-- Código de Seguridad -->
+      <!-- Código de Seguridad (Corregido y agrandado como en la captura original) -->
       <div class="flex items-center justify-between border-b border-gray-100 pb-3 mb-3">
         <span class="text-[10px] font-extrabold text-yapeGray tracking-wider uppercase flex items-center">
           CÓDIGO DE SEGURIDAD 
           <span class="ml-1 bg-[#00D4AF] text-white rounded-full w-3.5 h-3.5 flex items-center justify-center text-[8px] font-black">i</span>
         </span>
-        <div class="flex space-x-1">
-          <span id="cod1" class="bg-[#F4F2F5] text-yapeInk font-bold text-xs w-7 h-6.5 flex items-center justify-center rounded-md">4</span>
-          <span id="cod2" class="bg-[#F4F2F5] text-yapeInk font-bold text-xs w-7 h-6.5 flex items-center justify-center rounded-md">0</span>
-          <span id="cod3" class="bg-[#F4F2F5] text-yapeInk font-bold text-xs w-7 h-6.5 flex items-center justify-center rounded-md">9</span>
+        <div class="flex space-x-1.5">
+          <span id="cod1" class="bg-[#F4F2F5] text-yapeInk font-black text-[15px] w-8 h-7 flex items-center justify-center rounded-md select-none">1</span>
+          <span id="cod2" class="bg-[#F4F2F5] text-yapeInk font-black text-[15px] w-8 h-7 flex items-center justify-center rounded-md select-none">6</span>
+          <span id="cod3" class="bg-[#F4F2F5] text-yapeInk font-black text-[15px] w-8 h-7 flex items-center justify-center rounded-md select-none">6</span>
         </div>
       </div>
 
@@ -150,9 +150,9 @@
 
     </div>
 
-    <!-- Botón de Acción -->
+    <!-- Botón de Acción con el Avión de Papel apuntando hacia arriba-derecha -->
     <button id="btnNuevoYapeo" class="w-[98%] bg-[#00D4AF] hover:bg-[#00bda0] text-white font-extrabold py-3.5 px-4 rounded-xl flex items-center justify-center space-x-2 text-[14.5px] shadow-sm transition duration-200 mt-1 z-10">
-      <svg class="w-3.5 h-3.5 transform rotate-45 -translate-y-0.5 text-white" viewBox="0 0 24 24" fill="currentColor">
+      <svg class="w-4 h-4 transform -rotate-45 translate-x-0.5 translate-y-0.5 text-white" viewBox="0 0 24 24" fill="currentColor">
         <path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/>
       </svg>
       <span>Nuevo Yapeo</span>
@@ -160,7 +160,7 @@
 
     <!-- Botón de Necesito Ayuda -->
     <button id="btnAyuda" class="w-[98%] text-white font-bold py-2 px-4 rounded-xl flex items-center justify-center space-x-2 text-[14px] hover:bg-white/5 z-10">
-      <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <svg class="w-4.5 h-4.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
         <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
       </svg>
@@ -193,7 +193,7 @@
           const inputMontoVal = document.getElementById("inputMonto").value;
           const inputMonto = parseFloat(inputMontoVal) || 20;
           const inputNombre = document.getElementById("inputNombre").value;
-          const inputCelular = document.getElementById("inputCelular").value;
+          const inputCell = document.getElementById("inputCelular").value;
 
           const txtMontoFinal = document.getElementById("montoFinal");
           const txtNombreDestinatario = document.getElementById("nombreDestinatario");
@@ -233,12 +233,12 @@
           txtNombreDestinatario.textContent = inputNombre.trim() !== "" ? inputNombre : "Melanie Hua*";
 
           // Formateador dinámico para el celular (pasa "987654074" a "*** *** 074")
-          const celularLimpio = inputCelular.replace(/\D/g, ''); // Solo números
+          const celularLimpio = inputCell.replace(/\D/g, ''); // Solo números
           if (celularLimpio.length >= 3) {
             const ultimosTres = celularLimpio.substring(celularLimpio.length - 3);
             txtCelularDestinatario.textContent = `*** *** ${ultimosTres}`;
-          } else if (inputCelular.trim() !== "") {
-            txtCelularDestinatario.textContent = inputCelular;
+          } else if (inputCell.trim() !== "") {
+            txtCelularDestinatario.textContent = inputCell;
           } else {
             txtCelularDestinatario.textContent = "*** *** 074";
           }
