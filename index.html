@@ -15,9 +15,10 @@
   <!-- CDN de la librería lectora de QR oficial -->
   <script src="https://unpkg.com/html5-qrcode"></script>
 
-  <!-- SDKs de Firebase (v9 Compat para facilidad de integración en HTML plano) -->
+  <!-- SDKs de Firebase v9 Compat (App, Firestore y AUTH) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -38,11 +39,37 @@
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center bg-[#5C1C6A] p-4 font-sans">
 
-  <!-- Contenedor Principal -->
-  <div class="w-full max-w-sm bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col justify-between min-h-[570px] relative">
+  <!-- 1. PANTALLA DE LOGIN (Se muestra por defecto si no estás autenticado) -->
+  <div id="seccionLogin" class="w-full max-w-sm bg-white rounded-2xl shadow-2xl overflow-hidden p-6 space-y-4">
+    <div class="text-center">
+      <img src="https://i.postimg.cc/W3DvJwTz/6.webp" alt="Yape" class="w-16 h-16 mx-auto rounded-2xl shadow-md mb-3">
+      <h2 class="text-xl font-bold text-yapeInk">Iniciar Sesión</h2>
+      <p class="text-xs text-gray-500 mt-1">Accede para configurar y escanear QRs</p>
+    </div>
     
-    <!-- Encabezado morado de Yape -->
+    <div class="space-y-3">
+      <div>
+        <label class="block text-xs font-bold text-yapeInk mb-1 uppercase">Correo Electrónico</label>
+        <input id="loginEmail" type="email" placeholder="ejemplo@weboscura.com" class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-yape/30 transition">
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-yapeInk mb-1 uppercase">Contraseña</label>
+        <input id="loginPassword" type="password" placeholder="••••••••" class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-yape/30 transition">
+      </div>
+      <button onclick="iniciarSesionFirebase()" class="w-full bg-yape hover:bg-yapeDark text-white py-3.5 rounded-xl font-bold text-sm transition shadow-md active:scale-95">
+        Ingresar 🔓
+      </button>
+    </div>
+  </div>
+
+  <!-- 2. CONTENEDOR PRINCIPAL DEL PANEL (Oculto hasta que te loguees) -->
+  <div id="panelPrincipal" class="w-full max-w-sm bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col justify-between min-h-[570px] relative hidden">
+    
+    <!-- Encabezado con opción de Cerrar Sesión -->
     <div class="bg-yape text-white px-5 py-6 text-center relative">
+      <button onclick="cerrarSesionFirebase()" class="absolute top-2 left-2 text-[10px] bg-white/20 hover:bg-white/30 text-white font-bold px-2 py-1 rounded">
+        Salir 🚪
+      </button>
       <h1 class="font-bold text-xl tracking-wide">Yapear a un contacto</h1>
       <p class="text-xs text-purple-200 mt-1">Configura los datos del recibo</p>
       <button onclick="limpiarCampos()" class="absolute top-2 right-2 text-[10px] bg-red-600 hover:bg-red-700 text-white font-bold px-2 py-1 rounded">
@@ -54,7 +81,6 @@
     <div class="px-6 py-4 flex-grow space-y-4">
       <div>
         <label class="block text-xs font-bold text-yapeInk mb-1 uppercase tracking-wider">Nombre del Destinatario</label>
-        <!-- Fila de input con botón de escáner integrado a la derecha -->
         <div class="flex gap-2">
           <input id="loginNombre" type="text" placeholder="Ej. JUAN DE DIOS" class="flex-grow border border-gray-300 rounded-xl px-4 py-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-yape/30 transition">
           <button onclick="abrirEscaner()" class="bg-yape hover:bg-yapeDark text-white p-3 rounded-xl flex items-center justify-center transition shadow-sm active:scale-95" title="Escanear Código QR">
@@ -99,7 +125,6 @@
         <span class="font-bold text-sm tracking-wide">Escanear QR de Yape</span>
         <button onclick="cerrarEscaner()" class="text-white hover:text-red-200 text-sm font-bold bg-white/10 rounded-full w-7 h-7 flex items-center justify-center transition">✕</button>
       </div>
-      <!-- Zona del Lector de Cámara -->
       <div class="p-4 bg-gray-100 flex flex-col items-center">
         <div id="lector" class="w-full aspect-square overflow-hidden rounded-xl border-2 border-dashed border-yape"></div>
         <p class="text-[11px] text-gray-500 mt-2 text-center">Apunta con la cámara trasera al código QR de la aplicación.</p>
@@ -109,12 +134,11 @@
 
   <script>
     // ==========================================
-    // CONFIGURACIÓN DE TU BASE DE DATOS FIREBASE (INTEGRADO)
+    // CONFIGURACIÓN DE TU BASE DE DATOS FIREBASE
     // ==========================================
     const firebaseConfig = {
       apiKey: "AIzaSyBJKdcy6awuDMuBDOlhGiNLRYqjTzPdx_E",
       authDomain: "web-anonima-d7b3c.firebaseapp.com",
-      databaseURL: "https://web-anonima-d7b3c-default-rtdb.firebaseio.com", // Modificado según tu ID de proyecto
       projectId: "web-anonima-d7b3c",
       storageBucket: "web-anonima-d7b3c.firebasestorage.app",
       messagingSenderId: "212970847778",
@@ -124,9 +148,49 @@
 
     // Inicializar Firebase
     firebase.initializeApp(firebaseConfig);
-    const database = firebase.database();
+    const db = firebase.firestore(); // MUDADO A FIRESTORE SEGÚN TUS REGLAS
+    const auth = firebase.auth();
 
     let html5Qrcode = null;
+
+    // Escuchador de estado de autenticación (Detecta si ya estabas logueado)
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        // Usuario logueado: mostrar panel, ocultar login
+        document.getElementById("seccionLogin").classList.add("hidden");
+        document.getElementById("panelPrincipal").classList.remove("hidden");
+      } else {
+        // Sin login: mostrar login, ocultar panel
+        document.getElementById("seccionLogin").classList.remove("hidden");
+        document.getElementById("panelPrincipal").classList.add("hidden");
+      }
+    });
+
+    // Función para iniciar sesión en Firebase Auth
+    function iniciarSesionFirebase() {
+      const email = document.getElementById("loginEmail").value.trim();
+      const pass = document.getElementById("loginPassword").value;
+
+      if (!email || !pass) {
+        alert("Por favor completa todos los campos.");
+        return;
+      }
+
+      auth.signInWithEmailAndPassword(email, pass)
+        .then((userCredential) => {
+          console.log("Sesión iniciada:", userCredential.user.email);
+        })
+        .catch((error) => {
+          alert("Error al ingresar: " + error.message);
+        });
+    }
+
+    // Función para cerrar sesión
+    function cerrarSesionFirebase() {
+      auth.signOut().then(() => {
+        alert("Sesión cerrada.");
+      });
+    }
 
     // Extrae el ID único de cuenta y los datos crudos del formato EMVCo
     function decodificarQRCompleto(cadenaQr) {
@@ -145,22 +209,18 @@
             if (isNaN(longitud) || longitud <= 0) break;
             let valor = cadenaQr.substring(index + 4, index + 4 + longitud);
 
-            // Guardamos el Tag 39 (ID Único que Yape usa para saber quién eres)
             if (tag === "39") {
               idUnicoCuenta = valor.trim();
             }
-            // Tag 59 (Nombre genérico del QR)
             if (tag === "59") {
               nombreQr = valor.toUpperCase().trim();
             }
-            // Tag 26 a 30 (Intento de capturar celular nativo si existe)
             if (["26", "27", "28", "29", "30"].includes(tag)) {
               let matchCelular = valor.match(/9\d{8}/);
               if (matchCelular) {
                 celularQr = matchCelular[0];
               }
             }
-
             index += 4 + longitud;
           }
         }
@@ -190,11 +250,10 @@
           if (datosQr && datosQr.idUnico) {
             cerrarEscaner();
             
-            // Consultamos Firebase usando el ID único del QR como llave
-            database.ref('QRs/' + datosQr.idUnico).once('value').then((snapshot) => {
-              if (snapshot.exists()) {
-                // ¡El QR ya estaba registrado en la nube! Auto-rellenamos los datos reales.
-                let datosGuardados = snapshot.val();
+            // CONSULTA A CLOUD FIRESTORE (De acuerdo a tus reglas)
+            db.collection("QRs").doc(datosQr.idUnico).get().then((doc) => {
+              if (doc.exists) {
+                let datosGuardados = doc.data();
                 document.getElementById('loginNombre').value = datosGuardados.nombre;
                 
                 let num = datosGuardados.celular;
@@ -202,7 +261,6 @@
                   document.getElementById('loginNumero').value = `${num.substring(0,3)} ${num.substring(3,6)} ${num.substring(6,9)}`;
                 }
               } else {
-                // QR nuevo en Firebase (Probablemente dice "YAPERO" o es un QR nuevo)
                 setTimeout(() => {
                   let nombreSugerido = (datosQr.nombre && datosQr.nombre !== "YAPERO") ? datosQr.nombre : "";
                   
@@ -211,33 +269,32 @@
                     let realCelular = prompt(`Escribe el NÚMERO DE CELULAR de ${realNombre}:`, "");
                     
                     if (realCelular) {
-                      realCelular = realCelular.replace(/\s+/g, ''); // Limpiar espacios
+                      realCelular = realCelular.replace(/\s+/g, '');
                     }
 
-                    // Guardamos la asociación en Firebase para siempre
-                    database.ref('QRs/' + datosQr.idUnico).set({
+                    // GUARDADO EN CLOUD FIRESTORE
+                    db.collection("QRs").doc(datosQr.idUnico).set({
                       nombre: realNombre.trim().toUpperCase(),
                       celular: realCelular ? realCelular.trim() : ""
                     }).then(() => {
-                      alert("¡Datos guardados con éxito en la nube!");
-                      
-                      // Rellenar campos en pantalla
+                      alert("¡Datos guardados con éxito en Firestore!");
                       document.getElementById('loginNombre').value = realNombre.trim().toUpperCase();
                       if (realCelular) {
                         document.getElementById('loginNumero').value = `${realCelular.substring(0,3)} ${realCelular.substring(3,6)} ${realCelular.substring(6,9)}`;
                       }
+                    }).catch(e => {
+                      alert("Error de permisos en Firestore. Revisa tus reglas.");
+                      console.error(e);
                     });
                   }
                 }, 300);
               }
             }).catch(err => {
-              console.error("Error al conectar con Firebase: ", err);
-              // Fallback clásico si falla Firebase
+              console.error("Error al conectar con Firestore: ", err);
               document.getElementById('loginNombre').value = datosQr.nombre || "YAPERO";
             });
 
           } else {
-            // Si el QR escaneado no es de tipo Yape/EMVCo válido
             document.getElementById('loginNombre').value = decodedText.substring(0, 25).toUpperCase();
             cerrarEscaner();
           }
@@ -259,39 +316,14 @@
       }
     }
 
-    // Registro del Service Worker para habilitar la PWA
+    // Registro del Service Worker
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js')
-          .then(reg => console.log('Service Worker registrado con éxito', reg))
-          .catch(err => console.error('Error al registrar Service Worker', err));
+        navigator.serviceWorker.register('./sw.js').catch(err => console.error(err));
       });
     }
 
-    // Lógica para detectar e instalar la Aplicación Web
-    let deferredPrompt;
-    const pwaContainer = document.getElementById('pwaContainer');
-    const btnInstalar = document.getElementById('btnInstalar');
-
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      pwaContainer.classList.remove('hidden');
-    });
-
-    btnInstalar.addEventListener('click', async () => {
-      if (!deferredPrompt) return;
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      deferredPrompt = null;
-      pwaContainer.classList.add('hidden');
-    });
-
-    window.addEventListener('appinstalled', () => {
-      pwaContainer.classList.add('hidden');
-    });
-
-    // Carga de datos de configuración guardados
+    // Carga de datos locales
     document.addEventListener("DOMContentLoaded", () => {
       if(localStorage.getItem("yape_nombre")) {
         document.getElementById("loginNombre").value = localStorage.getItem("yape_nombre");
@@ -314,7 +346,6 @@
       const monto = document.getElementById("loginMonto").value.trim() || "200.00";
       
       const operacionAuto = Math.floor(10000000 + Math.random() * 90000000).toString();
-
       const ahora = new Date();
       const meses = ["ene.", "feb.", "mar.", "abr.", "may.", "jun.", "jul.", "ago.", "sep.", "oct.", "nov.", "dic."];
       let horas = ahora.getHours();
@@ -322,18 +353,14 @@
       const ampm = horas >= 12 ? 'p. m.' : 'a. m.';
       horas = horas % 12 || 12;
 
-      const fechaFinal = `${ahora.getDate()} ${meses[ahora.getMonth()]} ${ahora.getFullYear()}`;
-      const horaFinal = `${String(horas).padStart(2, '0')}:${minutos} ${ampm}`;
-
       localStorage.setItem("yape_nombre", nombre);
       localStorage.setItem("yape_numero", numero);
       localStorage.setItem("yape_monto", parseFloat(monto).toFixed(2));
       localStorage.setItem("yape_operacion", operacionAuto);
-      localStorage.setItem("yape_fecha", fechaFinal);
-      localStorage.setItem("yape_hora", horaFinal);
+      localStorage.setItem("yape_fecha", `${ahora.getDate()} ${meses[ahora.getMonth()]} ${ahora.getFullYear()}`);
+      localStorage.setItem("yape_hora", `${String(horas).padStart(2, '0')}:${minutos} ${ampm}`);
 
       sessionStorage.setItem("admin_session", "active");
-
       window.location.href = "recibo.html"; 
     }
   </script>
