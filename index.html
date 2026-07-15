@@ -216,7 +216,8 @@
               idUnicoCuenta = valor.trim();
             }
             if (tag === "59") {
-              nombreQr = valor.toUpperCase().trim();
+              // Corrección: ya no fuerza a mayúsculas desde el QR descifrado
+              nombreQr = valor.trim();
             }
             if (["26", "27", "28", "29", "30"].includes(tag)) {
               let matchCelular = valor.match(/9\d{8}/);
@@ -275,13 +276,13 @@
                       realCelular = realCelular.replace(/\s+/g, '');
                     }
 
-                    // GUARDADO EN CLOUD FIRESTORE
+                    // GUARDADO EN CLOUD FIRESTORE (Corrección: Guarda exactamente como lo ingresas en el prompt)
                     db.collection("QRs").doc(datosQr.idUnico).set({
-                      nombre: realNombre.trim().toUpperCase(),
+                      nombre: realNombre.trim(),
                       celular: realCelular ? realCelular.trim() : ""
                     }).then(() => {
                       alert("¡Datos guardados con éxito en Firestore!");
-                      document.getElementById('loginNombre').value = realNombre.trim().toUpperCase();
+                      document.getElementById('loginNombre').value = realNombre.trim();
                       if (realCelular) {
                         document.getElementById('loginNumero').value = `${realCelular.substring(0,3)} ${realCelular.substring(3,6)} ${realCelular.substring(6,9)}`;
                       }
@@ -298,7 +299,8 @@
             });
 
           } else {
-            document.getElementById('loginNombre').value = decodedText.substring(0, 25).toUpperCase();
+            // Corrección: ya no se fuerza .toUpperCase() en el fallback de decodificación
+            document.getElementById('loginNombre').value = decodedText.substring(0, 25);
             cerrarEscaner();
           }
         },
@@ -382,6 +384,7 @@
       }
     });
 
+    // Corrección: limpiarCampos() para que se reinicien las variables locales correctamente
     function limpiarCampos() {
       localStorage.clear();
       document.getElementById("loginNombre").value = "";
